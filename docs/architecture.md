@@ -47,6 +47,8 @@ lib/
 ├── app.dart                      # MaterialApp.router + themes
 ├── core/
 │   ├── config/app_config.dart    # Reads --dart-define values (API_BASE_URL, DATA_SOURCE)
+│   ├── di/repository_providers.dart # The one place mock vs live repositories are chosen
+│   ├── mock/mock_market_data.dart   # Sample data in the API contract's JSON shape
 │   ├── network/                  # Dio instance, interceptors, DioException → AppFailure mapping
 │   ├── errors/app_failure.dart   # Sealed failure types shown by the UI
 │   ├── routing/app_router.dart   # GoRouter configuration
@@ -74,8 +76,9 @@ lib/
 | `domain` | Plain immutable entities, repository contracts, small pure business rules | nothing (pure Dart) |
 | `data` | DTOs (`json_serializable`), Dio calls, DTO → entity mapping, SharedPreferences | `domain`, `core/network` |
 
-`application` never imports `data` directly. The concrete repository is chosen in one provider,
-which is the single place mock mode is switched. Tests override that provider with a fake.
+`application` never imports `data` directly. The concrete repositories are chosen in
+`core/di/repository_providers.dart`, the single place mock mode is switched. Tests override those
+providers with fakes.
 
 **Cross-feature reuse:** `CoinSummary` and `MarketRepository` live in `features/market/domain`. The
 watchlist feature reuses them (it fetches its coins with `ids=`) instead of duplicating the model.
