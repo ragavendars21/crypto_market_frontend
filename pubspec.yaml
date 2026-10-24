@@ -1,5 +1,5 @@
 name: crypto_market
-description: "A new Flutter project."
+description: "Crypto market research app: live prices, coin details, charts, global stats and a watchlist."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -7,7 +7,6 @@ environment:
   sdk: ^3.13.5
 
 dependencies:
-  cached_network_image: ^4.0.5
   dio: ^5.11.1
   fl_chart: ^1.3.0
   flutter:
@@ -28,3 +27,17 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  # Inter (SIL Open Font License, see assets/fonts/inter/OFL.txt), bundled so
+  # typography is identical on every device and works offline.
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/inter/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/inter/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/inter/Inter-Bold.ttf
+          weight: 700

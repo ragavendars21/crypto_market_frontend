@@ -6,6 +6,9 @@ import 'app_spacing.dart';
 /// Builds the light and dark [ThemeData] from the same design tokens, so
 /// both themes always have identical shapes, spacing and typography.
 abstract final class AppTheme {
+  /// Bundled in assets/fonts/inter (see pubspec.yaml).
+  static const fontFamily = 'Inter';
+
   static final ThemeData dark = _build(
     const _ThemeTokens(
       brightness: Brightness.dark,
@@ -56,6 +59,7 @@ abstract final class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
+      fontFamily: fontFamily,
       brightness: tokens.brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: tokens.background,
@@ -116,6 +120,7 @@ abstract final class AppTheme {
   static TextTheme _textTheme(_ThemeTokens tokens) {
     TextStyle style(double size, FontWeight weight, {Color? color}) {
       return TextStyle(
+        fontFamily: fontFamily,
         fontSize: size,
         fontWeight: weight,
         color: color ?? tokens.textPrimary,
