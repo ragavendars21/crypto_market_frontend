@@ -33,14 +33,17 @@ enum MarketMovement {
 
 /// Filter by market capitalization bracket.
 enum MarketCapTier {
-  all('All caps'),
-  large('Large cap'),
-  mid('Mid cap'),
-  small('Small cap');
+  all('All caps', 'Any market cap'),
+  large('Large cap', 'Market cap of \$10B or more'),
+  mid('Mid cap', 'Market cap from \$1B to \$10B'),
+  small('Small cap', 'Market cap under \$1B');
 
-  const MarketCapTier(this.label);
+  const MarketCapTier(this.label, this.description);
 
   final String label;
+
+  /// Explains the threshold, used for tooltips and screen readers.
+  final String description;
 
   String get apiValue => name;
 
@@ -71,6 +74,9 @@ class MarketQuery {
 
   bool get hasActiveFilters =>
       movement != MarketMovement.all || tier != MarketCapTier.all;
+
+  /// True when search or a filter narrows the results (sort does not).
+  bool get isNarrowed => trimmedSearch.isNotEmpty || hasActiveFilters;
 
   MarketQuery copyWith({
     String? search,

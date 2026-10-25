@@ -156,8 +156,11 @@ flowchart TD
 so toggling a coin rebuilds only the stars for that coin on every screen. SharedPreferences is
 loaded once in `main()` and injected through a provider override, so reads are synchronous afterwards.
 
-**Search:** the query text is debounced (~350 ms) in the notifier, and repeated identical queries are
-ignored, so typing doesn't send a request per keystroke. Search and filtering are **server-side**
+**Search:** the query text is debounced (350 ms) in `MarketQueryController`, the keyboard's search
+key applies it immediately, and an update that produces an equal `MarketQuery` (value equality,
+trimmed search) is ignored, so typing doesn't send a request per keystroke. Filter chips watch
+only their own field with `select`, so typing doesn't rebuild them. Clearing search and filters
+keeps the chosen sort. Search and filtering are **server-side**
 (applied by the backend to the top 250). Only the watchlist, which has at most 50 coins already on
 the device, is sorted **client-side**.
 

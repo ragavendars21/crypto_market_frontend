@@ -10,8 +10,10 @@ import '../../../shared/widgets/skeleton.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../market_stats/application/global_stats_provider.dart';
 import '../application/market_list_controller.dart';
+import '../application/market_query_controller.dart';
 import 'widgets/coin_list_tile.dart';
 import 'widgets/market_overview_strip.dart';
+import 'widgets/search_and_filter_bar.dart';
 
 /// Content stays readable on tablets instead of stretching edge to edge.
 const double _maxContentWidth = 840;
@@ -78,6 +80,15 @@ class MarketScreen extends ConsumerWidget {
                           const SliverToBoxAdapter(
                             child: MarketOverviewStrip(),
                           ),
+                          // Stays visible under the app bar while scrolling.
+                          const PinnedHeaderSliver(child: SearchAndFilterBar()),
+                          SliverToBoxAdapter(
+                            child: _ReloadingIndicator(
+                              // New results for a changed query or refresh.
+                              visible:
+                                  listState.isLoading && listState.hasValue,
+                            ),
+                          ),
                           if (listState.value?.isStale ?? false)
                             const SliverToBoxAdapter(child: StaleDataBanner()),
                           ..._listSlivers(context, ref, listState),
@@ -99,19 +110,40 @@ class MarketScreen extends ConsumerWidget {
     WidgetRef ref,
     AsyncValue<MarketListState> listState,
   ) {
+    final query = ref.watch(marketQueryProvider);
+    void clearSearchAndFilters() =>
+        ref.read(marketQueryProvider.notifier).clearSearchAndFilters();
+
     return switch (listState) {
       // Data is shown whenever we have it, including while refreshing.
       AsyncValue(:final value?) when value.coins.isEmpty => [
-        const SliverFillRemaining(
+        SliverFillRemaining(
           hasScrollBody: false,
           child: EmptyStateView(
             icon: Icons.search_off_rounded,
-            title: 'No coins found',
-            message: 'Try a different search or clear the filters.',
+            title: query.trimmedSearch.isEmpty
+                ? 'No coins match these filters'
+                : 'No results for "${query.trimmedSearch}"',
+            message:
+                'Search covers the top 250 coins by market cap. '
+                'Try another name or symbol, or clear the filters.',
+            action: query.isNarrowed
+                ? OutlinedButton(
+                    onPressed: clearSearchAndFilters,
+                    child: const Text('Clear search and filters'),
+                  )
+                : null,
           ),
         ),
       ],
       AsyncValue(:final value?) => [
+        if (query.isNarrowed)
+          SliverToBoxAdapter(
+            child: _ResultsSummary(
+              totalItems: value.totalItems,
+              onClear: clearSearchAndFilters,
+            ),
+          ),
         SliverList.builder(
           itemCount: value.coins.length,
           itemBuilder: (context, index) {
@@ -150,6 +182,48 @@ class MarketScreen extends ConsumerWidget {
         ),
       ],
     };
+  }
+}
+
+/// Thin progress bar shown while new results replace the visible ones.
+/// Always takes the same height so the list doesn't jump.
+class _ReloadingIndicator extends StatelessWidget {
+  const _ReloadingIndicator({required this.visible});
+
+  final bool visible;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 2,
+      child: visible ? const LinearProgressIndicator(minHeight: 2) : null,
+    );
+  }
+}
+
+/// "12 results · Clear", shown while search or filters narrow the list.
+class _ResultsSummary extends StatelessWidget {
+  const _ResultsSummary({required this.totalItems, required this.onClear});
+
+  final int totalItems;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: AppSpacing.lg, right: AppSpacing.sm),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              totalItems == 1 ? '1 result' : '$totalItems results',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          TextButton(onPressed: onClear, child: const Text('Clear')),
+        ],
+      ),
+    );
   }
 }
 

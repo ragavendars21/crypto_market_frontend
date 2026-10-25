@@ -68,7 +68,9 @@ void main() {
   testWidgets('shows an empty state when there are no coins', (tester) async {
     await pumpApp(tester, marketRepository: FakeMarketRepository(coins: []));
 
-    expect(find.text('No coins found'), findsOneWidget);
+    expect(find.text('No coins match these filters'), findsOneWidget);
+    // Nothing to clear, so no reset button is offered.
+    expect(find.text('Clear search and filters'), findsNothing);
   });
 
   testWidgets('loads the next page when scrolling near the end', (
