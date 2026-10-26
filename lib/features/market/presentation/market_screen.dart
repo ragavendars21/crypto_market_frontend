@@ -9,6 +9,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../shared/widgets/skeleton.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../market_stats/application/global_stats_provider.dart';
+import '../../watchlist/presentation/widgets/watchlist_button.dart';
 import '../application/market_list_controller.dart';
 import '../application/market_query_controller.dart';
 import 'widgets/coin_list_tile.dart';
@@ -151,6 +152,7 @@ class MarketScreen extends ConsumerWidget {
             return CoinListTile(
               coin: coin,
               onTap: () => context.push(AppRoutes.coinDetails(coin.id)),
+              trailing: WatchlistButton(coinId: coin.id, coinName: coin.name),
             );
           },
         ),

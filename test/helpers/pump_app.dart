@@ -8,6 +8,7 @@ import 'package:crypto_market/features/market_stats/domain/market_stats_reposito
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_market_repository.dart';
 
@@ -19,13 +20,20 @@ Future<ProviderContainer> pumpApp(
   MarketStatsRepository? marketStatsRepository,
   CoinDetailsRepository? coinDetailsRepository,
   List<Override> overrides = const [],
+  Map<String, Object> savedPreferences = const {},
   bool settle = true,
 }) async {
+  // In-memory SharedPreferences, starting with [savedPreferences], so tests
+  // can simulate data saved during an earlier app session.
+  SharedPreferences.setMockInitialValues(savedPreferences);
+  final preferences = await SharedPreferences.getInstance();
+
   await tester.pumpWidget(
     ProviderScope(
       // Same as the real app: no automatic retries.
       retry: (_, _) => null,
       overrides: [
+        sharedPreferencesProvider.overrideWithValue(preferences),
         marketRepositoryProvider.overrideWithValue(
           marketRepository ?? FakeMarketRepository(),
         ),

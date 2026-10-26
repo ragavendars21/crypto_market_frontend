@@ -10,6 +10,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../shared/formatters/market_formatters.dart';
 import '../../../shared/widgets/skeleton.dart';
 import '../../../shared/widgets/state_views.dart';
+import '../../watchlist/presentation/widgets/watchlist_button.dart';
 import '../application/coin_details_providers.dart';
 import '../domain/coin_details.dart';
 import '../domain/price_history.dart';
@@ -52,7 +53,14 @@ class _CoinDetailsScreenState extends ConsumerState<CoinDetailsScreen> {
     final details = ref.watch(coinDetailsProvider(widget.coinId));
 
     return Scaffold(
-      appBar: AppBar(title: Text(details.value?.name ?? '')),
+      appBar: AppBar(
+        title: Text(details.value?.name ?? ''),
+        actions: [
+          // Only once the coin is known to exist.
+          if (details.value case final coin?)
+            WatchlistButton(coinId: coin.id, coinName: coin.name),
+        ],
+      ),
       body: switch (details) {
         AsyncValue(:final value?) => RefreshIndicator(
           onRefresh: _refresh,

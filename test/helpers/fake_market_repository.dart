@@ -71,9 +71,19 @@ class FakeMarketRepository implements MarketRepository {
     );
   }
 
+  /// Every `getCoinsByIds` call, to check when the network is (not) used.
+  final List<List<String>> idsRequests = [];
+
   @override
   Future<List<CoinSummary>> getCoinsByIds(List<String> ids) async {
+    idsRequests.add(ids);
     await Future<void>.delayed(delay);
+
+    final failure = failNextRequestWith;
+    if (failure != null) {
+      failNextRequestWith = null;
+      throw failure;
+    }
     return coins.where((coin) => ids.contains(coin.id)).toList();
   }
 }

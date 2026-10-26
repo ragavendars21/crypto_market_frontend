@@ -1,18 +1,10 @@
-import 'package:crypto_market/app.dart';
 import 'package:crypto_market/core/routing/app_router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  Future<ProviderContainer> pumpApp(WidgetTester tester) async {
-    await tester.pumpWidget(const ProviderScope(child: CryptoMarketApp()));
-    await tester.pumpAndSettle();
-    return ProviderScope.containerOf(
-      tester.element(find.byType(CryptoMarketApp)),
-    );
-  }
+import '../../helpers/pump_app.dart';
 
+void main() {
   testWidgets('starts on the Markets tab', (tester) async {
     await pumpApp(tester);
 

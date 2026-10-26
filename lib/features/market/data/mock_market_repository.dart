@@ -3,6 +3,7 @@ import '../domain/coin_page.dart';
 import '../domain/coin_summary.dart';
 import '../domain/market_query.dart';
 import '../domain/market_repository.dart';
+import '../domain/market_sorting.dart';
 import 'dtos/coin_summary_dto.dart';
 
 /// Offline [MarketRepository] backed by sample data.
@@ -32,13 +33,13 @@ class MockMarketRepository implements MarketRepository {
     }
     await Future<void>.delayed(latency);
 
-    final matching =
-        _allCoins
-            .where((coin) => _matchesSearch(coin, query.trimmedSearch))
-            .where((coin) => _matchesMovement(coin, query.movement))
-            .where((coin) => _matchesTier(coin, query.tier))
-            .toList()
-          ..sort((a, b) => _compare(a, b, query.sort));
+    final matching = sortCoins(
+      _allCoins
+          .where((coin) => _matchesSearch(coin, query.trimmedSearch))
+          .where((coin) => _matchesMovement(coin, query.movement))
+          .where((coin) => _matchesTier(coin, query.tier)),
+      query.sort,
+    );
 
     final start = (page - 1) * perPage;
     final pageCoins = matching.skip(start).take(perPage).toList();
@@ -86,33 +87,5 @@ class MockMarketRepository implements MarketRepository {
             cap < MarketCapTier.largeCapMinimumUsd,
       MarketCapTier.small => cap < MarketCapTier.midCapMinimumUsd,
     };
-  }
-
-  /// Coins missing the sorted value always go last, in either direction,
-  /// so "unknown" never shows up as "lowest".
-  static int _compare(CoinSummary a, CoinSummary b, MarketSort sort) {
-    final (valueA, valueB, descending) = switch (sort) {
-      MarketSort.marketCapDesc => (a.marketCapUsd, b.marketCapUsd, true),
-      MarketSort.marketCapAsc => (a.marketCapUsd, b.marketCapUsd, false),
-      MarketSort.priceDesc => (a.priceUsd, b.priceUsd, true),
-      MarketSort.priceAsc => (a.priceUsd, b.priceUsd, false),
-      MarketSort.change24hDesc => (
-        a.priceChangePercentage24h,
-        b.priceChangePercentage24h,
-        true,
-      ),
-      MarketSort.change24hAsc => (
-        a.priceChangePercentage24h,
-        b.priceChangePercentage24h,
-        false,
-      ),
-      MarketSort.volumeDesc => (a.totalVolumeUsd, b.totalVolumeUsd, true),
-      MarketSort.volumeAsc => (a.totalVolumeUsd, b.totalVolumeUsd, false),
-    };
-
-    if (valueA == null && valueB == null) return 0;
-    if (valueA == null) return 1;
-    if (valueB == null) return -1;
-    return descending ? valueB.compareTo(valueA) : valueA.compareTo(valueB);
   }
 }

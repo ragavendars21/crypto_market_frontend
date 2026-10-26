@@ -141,8 +141,9 @@ flowchart TD
 | `coinDetailsProvider(id)` | `FutureProvider.autoDispose.family` | Coin details; kept 2 min after the screen closes |
 | `priceHistoryProvider((coinId:, range:))` | `FutureProvider.autoDispose.family` | Chart points for one range; kept 2 min, so switching back to a range reuses its data |
 | `globalStatsProvider` | `FutureProvider` | Global statistics |
-| `watchlistProvider` | `NotifierProvider<Set<String>>` | Saved IDs; add/remove/toggle; persists to SharedPreferences |
-| `watchlistCoinsProvider` | `FutureProvider` | Watches the ID set, fetches coins with `ids=` |
+| `watchlistProvider` | `NotifierProvider<List<String>>` | Saved IDs in insertion order; toggle/remove/restore (Undo); optimistic updates rolled back if saving fails; max 50 (the backend's `ids` limit) |
+| `watchlistCoinsProvider` | `AsyncNotifierProvider` | Fetches saved coins with `ids=`; a removal filters already-loaded data instead of making a request; `refresh()` always fetches |
+| `watchlistSortProvider` / `sortedWatchlistProvider` | `Notifier` / `Provider` | Client-side sort of the loaded coins, filtered synchronously by the current IDs so swipe-to-dismiss removes rows instantly |
 
 **Data flow example — sorting the market list:**
 
@@ -254,3 +255,6 @@ skeletons that match the final layout), `ErrorView`, `EmptyStateView`, `StaleDat
 | Express 5 | Express 4, Fastify | Express 5 forwards async errors to the error middleware natively; Express is what you already know |
 | Mock mode in both apps | Live data only | Deterministic tests, offline development, no API key needed until Phase 10 |
 | USD only | Currency picker | Not required; it would multiply cache keys and UI states |
+| Dominance as a 100% stacked bar + legend | Pie / donut chart | Lengths on one line compare more accurately than angles; the legend names every segment, so color is never the only cue |
+| Fixed chart color per coin (BTC always slot 1) | Color by rank | A coin keeps its color when rankings change; palette checked with a validator for color-blind separation and contrast in both themes |
+| SharedPreferences loaded once in `main()` and injected | Read asynchronously everywhere | Watchlist state can then be read synchronously, so stars render correctly on the first frame |
