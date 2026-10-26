@@ -36,10 +36,12 @@ class MockCoinDetailsRepository implements CoinDetailsRepository {
     final json = mockCoinDetailsJson(coinId);
     if (json == null) throw const NotFoundFailure();
 
+    final changes = json['priceChangePercentages']! as Map<String, Object?>;
     final points = _generatePoints(
       coinId: coinId,
       range: range,
       currentPrice: json['priceUsd'] as double?,
+      rangeChangePercentage: changes[_changeKeyFor(range)] as double?,
     );
     return PriceHistoryDto.fromJson({
       'coinId': coinId,
@@ -52,6 +54,7 @@ class MockCoinDetailsRepository implements CoinDetailsRepository {
     required String coinId,
     required ChartRange range,
     required double? currentPrice,
+    required double? rangeChangePercentage,
   }) {
     if (currentPrice == null) return const [];
 
@@ -77,6 +80,18 @@ class MockCoinDetailsRepository implements CoinDetailsRepository {
       prices[i] = prices[i + 1] / (1 + move);
     }
 
+    // Bend the walk so the chart's start-to-end change matches the sample
+    // percentage for this period; otherwise the chart would contradict the
+    // Performance section on the same screen.
+    if (rangeChangePercentage != null) {
+      final targetStart = currentPrice / (1 + rangeChangePercentage / 100);
+      final startCorrection = targetStart / prices.first;
+      for (var i = 0; i < count; i++) {
+        final progress = i / (count - 1);
+        prices[i] *= startCorrection + (1 - startCorrection) * progress;
+      }
+    }
+
     final points = <Map<String, Object?>>[];
     for (var i = 0; i < count; i++) {
       final time = end.subtract(step * (count - 1 - i));
@@ -88,6 +103,14 @@ class MockCoinDetailsRepository implements CoinDetailsRepository {
     }
     return points;
   }
+
+  /// Which sample change percentage describes each chart range.
+  static String _changeKeyFor(ChartRange range) => switch (range) {
+    ChartRange.day => '24h',
+    ChartRange.week => '7d',
+    ChartRange.month => '30d',
+    ChartRange.year => '1y',
+  };
 
   /// `String.hashCode` is not guaranteed to be stable across runs or
   /// platforms, so build a simple deterministic seed from the characters.

@@ -97,6 +97,50 @@ class ErrorView extends StatelessWidget {
   }
 }
 
+/// Compact error for a small area inside a screen (e.g. the chart), where
+/// the rest of the screen still works.
+class InlineErrorView extends StatelessWidget {
+  const InlineErrorView({
+    super.key,
+    required this.error,
+    required this.onRetry,
+  });
+
+  final Object error;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.error_outline_rounded,
+              color: context.appColors.negative,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              errorMessageFor(error),
+              style: theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+            TextButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_rounded),
+              label: const Text('Try again'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// User-facing text for any error object.
 String errorMessageFor(Object error) {
   return error is AppFailure

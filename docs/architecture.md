@@ -138,8 +138,8 @@ flowchart TD
 | `marketRepositoryProvider` | `Provider<MarketRepository>` | Chooses API or mock implementation |
 | `marketQueryProvider` | `NotifierProvider<MarketQuery>` | Current search text (debounced), sort, movement, tier |
 | `marketListProvider` | `AsyncNotifierProvider<MarketListState>` | Watches the query; loads page 1, `loadNextPage()`, `refresh()` |
-| `coinDetailsProvider(id)` | `FutureProvider.family` | Coin details |
-| `priceChartProvider((id, range))` | `FutureProvider.family` | Chart points for one range |
+| `coinDetailsProvider(id)` | `FutureProvider.autoDispose.family` | Coin details; kept 2 min after the screen closes |
+| `priceHistoryProvider((coinId:, range:))` | `FutureProvider.autoDispose.family` | Chart points for one range; kept 2 min, so switching back to a range reuses its data |
 | `globalStatsProvider` | `FutureProvider` | Global statistics |
 | `watchlistProvider` | `NotifierProvider<Set<String>>` | Saved IDs; add/remove/toggle; persists to SharedPreferences |
 | `watchlistCoinsProvider` | `FutureProvider` | Watches the ID set, fetches coins with `ids=` |

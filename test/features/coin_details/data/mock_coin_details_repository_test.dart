@@ -1,5 +1,6 @@
 import 'package:crypto_market/core/errors/app_failure.dart';
 import 'package:crypto_market/features/coin_details/data/mock_coin_details_repository.dart';
+import 'package:crypto_market/features/coin_details/domain/coin_details.dart';
 import 'package:crypto_market/features/coin_details/domain/price_history.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -61,6 +62,27 @@ void main() {
       );
       expect(first.points.last.priceUsd, details.priceUsd);
     });
+
+    test(
+      'chart change agrees with the sample change for that period',
+      () async {
+        final details = await repository.getCoinDetails('bitcoin');
+        final week = await repository.getPriceHistory(
+          'bitcoin',
+          ChartRange.week,
+        );
+        final day = await repository.getPriceHistory('bitcoin', ChartRange.day);
+
+        expect(
+          week.changePercentage,
+          closeTo(details.priceChangePercentages[ChangePeriod.d7]!, 0.0001),
+        );
+        expect(
+          day.changePercentage,
+          closeTo(details.priceChangePercentage24h!, 0.0001),
+        );
+      },
+    );
 
     test('a newly listed coin lacks data for longer ranges', () async {
       final day = await repository.getPriceHistory(

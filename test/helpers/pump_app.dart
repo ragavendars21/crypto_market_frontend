@@ -1,6 +1,7 @@
 import 'package:crypto_market/app.dart';
 import 'package:crypto_market/core/di/repository_providers.dart';
 import 'package:crypto_market/features/coin_details/data/mock_coin_details_repository.dart';
+import 'package:crypto_market/features/coin_details/domain/coin_details_repository.dart';
 import 'package:crypto_market/features/market/domain/market_repository.dart';
 import 'package:crypto_market/features/market_stats/data/mock_market_stats_repository.dart';
 import 'package:crypto_market/features/market_stats/domain/market_stats_repository.dart';
@@ -16,6 +17,7 @@ Future<ProviderContainer> pumpApp(
   WidgetTester tester, {
   MarketRepository? marketRepository,
   MarketStatsRepository? marketStatsRepository,
+  CoinDetailsRepository? coinDetailsRepository,
   List<Override> overrides = const [],
   bool settle = true,
 }) async {
@@ -32,7 +34,8 @@ Future<ProviderContainer> pumpApp(
               MockMarketStatsRepository(latency: Duration.zero),
         ),
         coinDetailsRepositoryProvider.overrideWithValue(
-          MockCoinDetailsRepository(latency: Duration.zero),
+          coinDetailsRepository ??
+              MockCoinDetailsRepository(latency: Duration.zero),
         ),
         ...overrides,
       ],

@@ -37,7 +37,7 @@ void main() {
     container.read(appRouterProvider).go(AppRoutes.coinDetails('bitcoin'));
     await tester.pumpAndSettle();
 
-    expect(find.widgetWithText(AppBar, 'bitcoin'), findsOneWidget);
+    expect(find.widgetWithText(AppBar, 'Bitcoin'), findsOneWidget);
     expect(find.byType(NavigationBar), findsNothing);
   });
 }

@@ -52,6 +52,16 @@ void main() {
     expect(MarketFormatters.percentage(null), '—');
   });
 
+  test('dates use a readable format and handle null', () {
+    // A local (non-UTC) time, so the result doesn't depend on the time zone.
+    final time = DateTime(2026, 10, 23, 14, 5);
+
+    expect(MarketFormatters.dateTime(time), 'Oct 23, 2026, 2:05 PM');
+    expect(MarketFormatters.date(time), 'Oct 23, 2026');
+    expect(MarketFormatters.dateTime(null), '—');
+    expect(MarketFormatters.date(null), '—');
+  });
+
   test('count groups thousands', () {
     expect(MarketFormatters.count(17321), '17,321');
     expect(MarketFormatters.count(null), '—');

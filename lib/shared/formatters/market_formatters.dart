@@ -61,6 +61,23 @@ abstract final class MarketFormatters {
     return NumberFormat.decimalPattern('en_US').format(value);
   }
 
+  // Explicit patterns rather than locale presets, so output is identical on
+  // every device and intl version.
+  static final _dateTimeFormat = DateFormat('MMM d, y, h:mm a', 'en_US');
+  static final _dateFormat = DateFormat('MMM d, y', 'en_US');
+
+  /// `Oct 23, 2026, 10:00 AM` in the device's time zone.
+  static String dateTime(DateTime? value) {
+    if (value == null) return notAvailable;
+    return _dateTimeFormat.format(value.toLocal());
+  }
+
+  /// `Mar 14, 2024` in the device's time zone.
+  static String date(DateTime? value) {
+    if (value == null) return notAvailable;
+    return _dateFormat.format(value.toLocal());
+  }
+
   static String? _compact(double value) {
     const units = [(1e12, 'T'), (1e9, 'B'), (1e6, 'M'), (1e3, 'K')];
     for (final (threshold, suffix) in units) {

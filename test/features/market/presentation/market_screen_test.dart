@@ -1,4 +1,5 @@
 import 'package:crypto_market/core/errors/app_failure.dart';
+import 'package:crypto_market/features/coin_details/presentation/coin_details_screen.dart';
 import 'package:crypto_market/features/market/presentation/widgets/coin_list_tile.dart';
 import 'package:crypto_market/shared/widgets/state_views.dart';
 import 'package:flutter/material.dart';
@@ -144,6 +145,9 @@ void main() {
     await tester.tap(find.text('Coin 2'));
     await tester.pumpAndSettle();
 
-    expect(find.widgetWithText(AppBar, 'coin-2'), findsOneWidget);
+    final screen = tester.widget<CoinDetailsScreen>(
+      find.byType(CoinDetailsScreen),
+    );
+    expect(screen.coinId, 'coin-2');
   });
 }

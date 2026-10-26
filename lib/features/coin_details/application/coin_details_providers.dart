@@ -1,0 +1,28 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/di/repository_providers.dart';
+import '../../../core/utils/provider_cache.dart';
+import '../domain/coin_details.dart';
+import '../domain/price_history.dart';
+
+const _cacheDuration = Duration(minutes: 2);
+
+/// Details for one coin. `family` creates a separate provider per coin ID;
+/// `autoDispose` frees it once the details screen is closed (after a short
+/// cache period).
+final coinDetailsProvider = FutureProvider.autoDispose
+    .family<CoinDetails, String>((ref, coinId) {
+      ref.cacheFor(_cacheDuration);
+      return ref.watch(coinDetailsRepositoryProvider).getCoinDetails(coinId);
+    });
+
+/// Price history for one coin and range. The key is a record, which has
+/// value equality, so `(coinId: 'bitcoin', range: ChartRange.week)` always
+/// refers to the same provider.
+final priceHistoryProvider = FutureProvider.autoDispose
+    .family<PriceHistory, ({String coinId, ChartRange range})>((ref, key) {
+      ref.cacheFor(_cacheDuration);
+      return ref
+          .watch(coinDetailsRepositoryProvider)
+          .getPriceHistory(key.coinId, key.range);
+    });
