@@ -165,7 +165,21 @@ keeps the chosen sort. Search and filtering are **server-side**
 (applied by the backend to the top 250). Only the watchlist, which has at most 50 coins already on
 the device, is sorted **client-side**.
 
-## 5. Error handling
+## 5. Networking
+
+- `core/network/api_client.dart` holds one `Dio` instance (provider): base URL from `AppConfig`,
+  10 s connect timeout, 20 s receive timeout (the backend may wait ~8 s for CoinGecko), and a
+  request/status log in debug builds only.
+- `ApiClient.get()` returns the decoded `{ data, meta }` envelope and converts every
+  `DioException` into an `AppFailure`; `ApiClient.parse()` turns unexpected JSON shapes into
+  `ServerFailure('MALFORMED_RESPONSE')`, so a `TypeError` can never reach a screen.
+- `Api*Repository` classes only build query parameters and map DTOs. An empty search is not sent
+  (the backend rejects it) and an empty watchlist makes no request.
+- Android allows plain HTTP only in debug/profile builds (`usesCleartextTraffic` in those
+  manifests); iOS allows it only for local-network addresses (`NSAllowsLocalNetworking`).
+  Release builds expect an HTTPS backend.
+
+## 6. Error handling
 
 ```mermaid
 flowchart LR
@@ -189,7 +203,7 @@ Raw exceptions are logged in debug builds only and never shown to the user.
 at the end of the list. If the backend reports `meta.source = "stale"`, a small banner says the
 prices may be out of date.
 
-## 6. Design system
+## 7. Design system
 
 **Identity:** "calm terminal". The app is dark-first, with a deep ink background, one electric accent,
 and tabular figures so prices don't shift as they update. A light theme uses the same tokens.
@@ -243,7 +257,7 @@ skeletons that match the final layout), `ErrorView`, `EmptyStateView`, `StaleDat
 | Percentage | `+5.58%` / `−2.40%` | 2 decimals, explicit sign |
 | Missing value | `—` | Any `null`, with semantic label "Not available" |
 
-## 7. Key decisions and trade-offs
+## 8. Key decisions and trade-offs
 
 | Decision | Alternative considered | Why |
 |---|---|---|

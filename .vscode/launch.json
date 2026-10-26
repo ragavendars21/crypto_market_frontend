@@ -1,0 +1,32 @@
+{
+  // Run configurations for VS Code (F5). Start the backend first with
+  // `npm run dev` in crypto_market_backend for the "Live" configurations.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Emulator or simulator: the app finds the backend automatically
+      // (10.0.2.2 on the Android emulator, localhost elsewhere).
+      "name": "Live (emulator, local backend)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart"
+    },
+    {
+      // Physical phone on the same Wi-Fi: replace the IP with your
+      // computer's LAN address (run `ipconfig` and use the IPv4 address).
+      "name": "Live (physical device)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=API_BASE_URL=http://192.168.1.10:3000/api/v1"]
+    },
+    {
+      // Built-in sample data: no backend, no network, no API key.
+      "name": "Mock data (offline)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=DATA_SOURCE=mock"]
+    }
+  ]
+}

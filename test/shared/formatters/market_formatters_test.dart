@@ -50,6 +50,9 @@ void main() {
     expect(MarketFormatters.percentage(-2.4), '-2.40%');
     expect(MarketFormatters.percentage(0), '0.00%');
     expect(MarketFormatters.percentage(null), '—');
+    // Tiny moves that round to zero are neutral: no "+0.00%" or "-0.00%".
+    expect(MarketFormatters.percentage(0.004), '0.00%');
+    expect(MarketFormatters.percentage(-0.004), '0.00%');
   });
 
   test('dates use a readable format and handle null', () {

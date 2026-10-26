@@ -36,9 +36,10 @@ class AppConfig {
 
   factory AppConfig.fromEnvironment() {
     const baseUrl = String.fromEnvironment('API_BASE_URL');
+    // Live data by default; pass DATA_SOURCE=mock to work offline.
     const dataSource = String.fromEnvironment(
       'DATA_SOURCE',
-      defaultValue: 'mock',
+      defaultValue: 'live',
     );
 
     return AppConfig(

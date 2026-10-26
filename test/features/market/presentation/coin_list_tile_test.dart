@@ -113,6 +113,17 @@ void main() {
       expect(await colorFor(tester, 0), isNot(AppColors.light.positive));
     });
 
+    testWidgets('treats a change that rounds to 0.00% as unchanged', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrap(const PriceChangeIndicator(percentage: 0.004)),
+      );
+
+      expect(find.text('0.00%'), findsOneWidget);
+      expect(find.byType(Icon), findsNothing);
+    });
+
     testWidgets('shows an arrow only when the price moved', (tester) async {
       await tester.pumpWidget(_wrap(const PriceChangeIndicator(percentage: 3)));
       expect(find.byIcon(Icons.arrow_drop_up), findsOneWidget);

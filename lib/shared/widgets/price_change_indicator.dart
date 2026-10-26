@@ -30,7 +30,10 @@ class PriceChangeIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final value = percentage;
+    // Decide direction from the value as displayed, so 0.004% shows as a
+    // neutral "0.00%" rather than a green "▲ +0.00%".
+    final raw = percentage;
+    final value = raw == null ? null : MarketFormatters.roundedPercentage(raw);
     final color = switch (value) {
       null || 0 => theme.colorScheme.onSurfaceVariant,
       > 0 => context.appColors.positive,

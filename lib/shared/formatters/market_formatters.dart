@@ -51,8 +51,17 @@ abstract final class MarketFormatters {
   /// `+5.58%`, `-2.40%`, `0.00%`.
   static String percentage(double? value) {
     if (value == null) return notAvailable;
-    final sign = value > 0 ? '+' : '';
-    return '$sign${value.toStringAsFixed(2)}%';
+    final rounded = roundedPercentage(value);
+    final sign = rounded > 0 ? '+' : '';
+    return '$sign${rounded.toStringAsFixed(2)}%';
+  }
+
+  /// [value] rounded to the two decimals that are displayed. Direction
+  /// (arrow, color, sign) must use this, so a change shown as "0.00%" is
+  /// never painted as up or down, and "-0.00%" never appears.
+  static double roundedPercentage(double value) {
+    final rounded = (value * 100).round() / 100;
+    return rounded == 0 ? 0 : rounded;
   }
 
   /// Plain counts such as number of exchanges: `17,321`.
