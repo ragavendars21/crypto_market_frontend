@@ -18,7 +18,7 @@ Data provided by CoinGecko.
 | **Navigation** | GoRouter with a stateful bottom-navigation shell and deep links (`/coins/bitcoin`) |
 | **Charts** | fl_chart line chart; dominance shown as a stacked bar |
 | **Storage** | SharedPreferences for the watchlist |
-| **Tests** | 160 unit, widget and accessibility tests, no network needed |
+| **Tests** | 159 unit, widget and accessibility tests, no network needed |
 
 Docs: [architecture](docs/architecture.md) · [API contract](docs/api-contract.md)
 
