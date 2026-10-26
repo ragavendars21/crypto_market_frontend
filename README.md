@@ -20,7 +20,8 @@ Data provided by CoinGecko.
 | **Storage** | SharedPreferences for the watchlist |
 | **Tests** | 159 unit, widget and accessibility tests, no network needed |
 
-Docs: [architecture](docs/architecture.md) · [API contract](docs/api-contract.md)
+Docs: [technical document](docs/TECHNICAL_DOCUMENT.md) · [architecture](docs/architecture.md) ·
+[API contract](docs/api-contract.md)
 
 ## Run it
 

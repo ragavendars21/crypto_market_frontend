@@ -1,7 +1,7 @@
 # Architecture — Crypto Market & Research App
 
-> Status: Phase 2 plan. This document is updated as phases are implemented, so it always describes
-> the real code.
+> Status: describes the implemented code (all phases complete, 26 Oct 2026). For the full
+> write-up, test results and interview notes see [TECHNICAL_DOCUMENT.md](TECHNICAL_DOCUMENT.md).
 
 ## 1. System overview
 
@@ -128,7 +128,7 @@ flowchart TD
 |---|---|
 | Markets | Global summary strip (total market cap, 24h change, BTC dominance) → search field → sort and filter chips → paginated coin list with pull-to-refresh |
 | Coin details | Header (logo, name, symbol, rank, watchlist star) → price + 24h change → chart card with range selector (1D/7D/30D/1Y) → % change grid → market data grid (market cap, FDV, volume, 24h high/low) → supply section (circulating / total / max with progress bar only when max exists) → ATH/ATL → "Last updated" + attribution |
-| Global | Hero card (total market cap + 24h change) → volume card → dominance donut chart + legend → stat cards (active cryptos, markets, volume change) → updated time |
+| Global | Hero card (total market cap + 24h change) → stat cards (24h volume + change, BTC dominance, active cryptocurrencies, exchanges) → market cap dominance as a stacked bar + legend → updated time |
 | Watchlist | Saved coins as `CoinListTile`s, swipe to remove with undo SnackBar, empty state with "Explore markets" button |
 
 ## 4. State management (Riverpod)
@@ -242,9 +242,10 @@ vertical grid lines. The touch tooltip shows price and date/time. The y-axis use
 labels, and the x-axis uses time labels suited to the range (hours for 1D, days for 7D/30D, months
 for 1Y).
 
-**Reusable widgets (planned):** `CoinLogo`, `CoinListTile`, `PriceChangeIndicator`, `WatchlistButton`,
-`MarketStatCard`, `SectionHeader`, `SearchAndFilterBar`, `PriceChart`, `LoadingView` (shimmer
-skeletons that match the final layout), `ErrorView`, `EmptyStateView`, `StaleDataBanner`.
+**Reusable widgets:** `CoinLogo`, `CoinListTile` (+ `CoinListTileSkeleton`),
+`PriceChangeIndicator`, `WatchlistButton`, `MarketStatCard`, `SectionHeader`, `SearchAndFilterBar`,
+`PriceChart`, `DominanceBar`, `SkeletonPulse` / `SkeletonBox` (skeletons shaped like the final
+layout), `ErrorView`, `InlineErrorView`, `EmptyStateView`, `StaleDataBanner`.
 
 **Formatting rules** (`shared/formatters`):
 
