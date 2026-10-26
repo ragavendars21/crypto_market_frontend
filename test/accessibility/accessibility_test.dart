@@ -1,7 +1,6 @@
 import 'package:crypto_market/core/routing/app_router.dart';
 import 'package:crypto_market/features/market/data/mock_market_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/pump_app.dart';
@@ -81,10 +80,5 @@ void main() {
 
     await expectLater(tester, meetsGuideline(textContrastGuideline));
     semantics.dispose();
-  });
-
-  // Keeps the analyzer from flagging the import as unused in some setups.
-  test('provider scope type is available', () {
-    expect(ProviderScope, isNotNull);
   });
 }
