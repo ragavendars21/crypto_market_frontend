@@ -54,6 +54,15 @@ class _CoinDetailsScreenState extends ConsumerState<CoinDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        // Opened from a link there's nothing to go back to, so offer a way
+        // to the markets instead of leaving the user stuck.
+        leading: context.canPop()
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                tooltip: 'Back to markets',
+                onPressed: () => context.go(AppRoutes.markets),
+              ),
         title: Text(details.value?.name ?? ''),
         actions: [
           // Only once the coin is known to exist.

@@ -170,6 +170,21 @@ void main() {
     expect(find.text(r'$67,012.50'), findsOneWidget);
   });
 
+  testWidgets('opened from a link, the app bar still offers a way back', (
+    tester,
+  ) async {
+    final repository = FakeCoinDetailsRepository()
+      ..failNextDetailsWith = const NetworkFailure();
+    // `go` replaces the stack, like opening a deep link: nothing to pop.
+    await _openCoin(tester, 'bitcoin', repository: repository);
+
+    await tester.tap(find.byTooltip('Back to markets'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CoinDetailsScreen), findsNothing);
+    expect(find.widgetWithText(AppBar, 'Markets'), findsOneWidget);
+  });
+
   testWidgets('an unknown coin explains itself and links back', (tester) async {
     await _openCoin(tester, 'not-a-coin');
 

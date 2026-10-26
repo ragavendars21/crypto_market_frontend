@@ -1,5 +1,7 @@
 # Crypto Market — Flutter App
 
+[![CI](https://github.com/ragavendars21/crypto_market_frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/ragavendars21/crypto_market_frontend/actions/workflows/ci.yml)
+
 A CoinGecko-style crypto research app built with Flutter: live market list with server-side search,
 filters and sorting, coin details with interactive price charts, global market statistics and a
 persistent watchlist.
@@ -16,7 +18,7 @@ Data provided by CoinGecko.
 | **Navigation** | GoRouter with a stateful bottom-navigation shell and deep links (`/coins/bitcoin`) |
 | **Charts** | fl_chart line chart; dominance shown as a stacked bar |
 | **Storage** | SharedPreferences for the watchlist |
-| **Tests** | 149 unit and widget tests, no network needed |
+| **Tests** | 160 unit, widget and accessibility tests, no network needed |
 
 Docs: [architecture](docs/architecture.md) · [API contract](docs/api-contract.md)
 

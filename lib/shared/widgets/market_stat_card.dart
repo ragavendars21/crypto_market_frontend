@@ -53,7 +53,13 @@ class MarketStatCard extends StatelessWidget {
             ),
             if (footer != null) ...[
               const SizedBox(height: AppSpacing.xs),
-              footer!,
+              // Like the value: shrink rather than overflow in narrow cards
+              // or with large system text sizes.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: footer,
+              ),
             ],
           ],
         ),
