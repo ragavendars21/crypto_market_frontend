@@ -50,13 +50,11 @@ void main() {
     expect(MarketFormatters.percentage(-2.4), '-2.40%');
     expect(MarketFormatters.percentage(0), '0.00%');
     expect(MarketFormatters.percentage(null), '—');
-    // Tiny moves that round to zero are neutral: no "+0.00%" or "-0.00%".
     expect(MarketFormatters.percentage(0.004), '0.00%');
     expect(MarketFormatters.percentage(-0.004), '0.00%');
   });
 
   test('dates use a readable format and handle null', () {
-    // A local (non-UTC) time, so the result doesn't depend on the time zone.
     final time = DateTime(2026, 10, 23, 14, 5);
 
     expect(MarketFormatters.dateTime(time), 'Oct 23, 2026, 2:05 PM');

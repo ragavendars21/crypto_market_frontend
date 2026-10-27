@@ -7,7 +7,6 @@ import '../../features/market_stats/presentation/market_stats_screen.dart';
 import '../../features/watchlist/presentation/watchlist_screen.dart';
 import 'app_shell.dart';
 
-/// Route paths in one place, so screens never hardcode URL strings.
 abstract final class AppRoutes {
   static const markets = '/markets';
   static const watchlist = '/watchlist';
@@ -16,14 +15,10 @@ abstract final class AppRoutes {
   static String coinDetails(String coinId) => '/coins/$coinId';
 }
 
-/// The router is a provider so tests can read or override it, and so it is
-/// created once and disposed with the [ProviderScope].
 final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     initialLocation: AppRoutes.markets,
     routes: [
-      // Each branch is a bottom-navigation tab. `indexedStack` keeps every
-      // tab alive, so scroll position and state survive tab switches.
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
@@ -54,8 +49,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      // Outside the shell: opens full screen over the tabs, and works as a
-      // deep link (e.g. /coins/bitcoin) because it only needs the ID.
       GoRoute(
         path: '/coins/:coinId',
         builder: (_, state) =>

@@ -1,4 +1,3 @@
-/// Periods for which the provider reports a price change percentage.
 enum ChangePeriod {
   h1('1h', '1H'),
   h24('24h', '24H'),
@@ -11,24 +10,19 @@ enum ChangePeriod {
 
   const ChangePeriod(this.apiKey, this.label);
 
-  /// Key used in the API's `priceChangePercentages` object.
   final String apiKey;
   final String label;
 }
 
-/// All-time high or all-time low.
 class PriceExtreme {
   const PriceExtreme({this.priceUsd, this.changePercentage, this.date});
 
   final double? priceUsd;
 
-  /// How far the current price is from this extreme, in percent.
   final double? changePercentage;
   final DateTime? date;
 }
 
-/// Full information for the coin details screen. All market values are
-/// nullable because the provider does not supply every value for every coin.
 class CoinDetails {
   const CoinDetails({
     required this.id,
@@ -65,10 +59,8 @@ class CoinDetails {
   final double? circulatingSupply;
   final double? totalSupply;
 
-  /// `null` for coins without a supply cap (e.g. Ethereum), not zero.
   final double? maxSupply;
 
-  /// Contains every [ChangePeriod]; a value is `null` when unavailable.
   final Map<ChangePeriod, double?> priceChangePercentages;
   final PriceExtreme? allTimeHigh;
   final PriceExtreme? allTimeLow;
@@ -79,10 +71,6 @@ class CoinDetails {
   double? get priceChangePercentage24h =>
       priceChangePercentages[ChangePeriod.h24];
 
-  /// Share of the maximum supply already in circulation, from 0 to 1.
-  ///
-  /// Returns `null` when either value is unknown, so the UI only draws a
-  /// supply progress bar for coins that really have a cap.
   double? get circulatingSupplyRatio {
     final circulating = circulatingSupply;
     final max = maxSupply;

@@ -7,8 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../helpers/fake_market_repository.dart';
 import '../../../helpers/pump_app.dart';
 
-/// The mock repository applies the same search/filter/sort rules as the
-/// backend, so these tests check real results, not just requests.
 MockMarketRepository _realisticRepository() =>
     MockMarketRepository(latency: Duration.zero);
 
@@ -17,8 +15,6 @@ List<String> _visibleCoinIds(WidgetTester tester) => tester
     .map((tile) => tile.coin.id)
     .toList();
 
-/// The chip row scrolls horizontally, so bring the chip into view first,
-/// just as a user would swipe to it.
 Future<void> _tapChip(WidgetTester tester, String label) async {
   final chip = find.widgetWithText(FilterChip, label);
   await tester.ensureVisible(chip);
@@ -29,7 +25,7 @@ Future<void> _tapChip(WidgetTester tester, String label) async {
 
 Future<void> _search(WidgetTester tester, String text) async {
   await tester.enterText(find.byType(TextField), text);
-  await tester.pump(const Duration(milliseconds: 400)); // Past the debounce.
+  await tester.pump(const Duration(milliseconds: 400));
   await tester.pumpAndSettle();
 }
 
@@ -88,7 +84,7 @@ void main() {
 
     await tester.tap(find.text(MarketSort.marketCapDesc.label));
     await tester.pumpAndSettle();
-    await tester.tapAt(const Offset(10, 10)); // Tap the scrim.
+    await tester.tapAt(const Offset(10, 10));
     await tester.pumpAndSettle();
 
     expect(repository.requests, hasLength(1));
@@ -115,7 +111,6 @@ void main() {
     await _tapChip(tester, 'Mid cap');
     await _search(tester, 'coin');
 
-    // Bitcoin and Dogecoin match "coin" but are large caps.
     expect(_visibleCoinIds(tester), ['bitcoin-cash', 'litecoin']);
     expect(find.text('2 results'), findsOneWidget);
   });

@@ -8,7 +8,6 @@ import '../../../../shared/widgets/price_change_indicator.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../domain/coin_details.dart';
 
-/// Logo, name, symbol, rank, current price and 24h change.
 class CoinPriceHeader extends StatelessWidget {
   const CoinPriceHeader({super.key, required this.details});
 
@@ -58,7 +57,6 @@ class CoinPriceHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: AppSpacing.lg),
-        // Very large prices shrink instead of overflowing.
         FittedBox(
           fit: BoxFit.scaleDown,
           alignment: Alignment.centerLeft,
@@ -114,7 +112,6 @@ class _Badge extends StatelessWidget {
   }
 }
 
-/// A card with a section title, used for every block below the chart.
 class DetailSectionCard extends StatelessWidget {
   const DetailSectionCard({
     super.key,
@@ -139,7 +136,6 @@ class DetailSectionCard extends StatelessWidget {
   }
 }
 
-/// "Market cap ........ $1.32T", with missing values read as "Not available".
 class StatRow extends StatelessWidget {
   const StatRow({super.key, required this.label, required this.value});
 
@@ -166,8 +162,6 @@ class StatRow extends StatelessWidget {
             ),
             const SizedBox(width: AppSpacing.md),
             Flexible(
-              // Align fills the flexible space so the value hugs the right
-              // edge instead of starting mid-row.
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
@@ -191,7 +185,6 @@ class StatRow extends StatelessWidget {
   }
 }
 
-/// Price change for every period the provider reports (1H … 1Y).
 class PerformanceGrid extends StatelessWidget {
   const PerformanceGrid({super.key, required this.changes});
 
@@ -203,7 +196,6 @@ class PerformanceGrid extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Four per row on phones, all eight in one row when there's room.
         final columns = constraints.maxWidth >= 560 ? 8 : 4;
         final cellWidth =
             (constraints.maxWidth - AppSpacing.sm * (columns - 1)) / columns;
@@ -238,8 +230,6 @@ class PerformanceGrid extends StatelessWidget {
   }
 }
 
-/// Circulating, total and max supply, plus a progress bar only when the
-/// coin has a known maximum supply.
 class SupplySection extends StatelessWidget {
   const SupplySection({super.key, required this.details});
 
@@ -299,7 +289,6 @@ class SupplySection extends StatelessWidget {
   }
 }
 
-/// All-time high and low with how far the current price is from each.
 class PriceExtremesSection extends StatelessWidget {
   const PriceExtremesSection({super.key, required this.details});
 

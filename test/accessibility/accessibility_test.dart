@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/pump_app.dart';
 
-/// Every screen, opened through the real router.
 const _screens = {
   'Markets': AppRoutes.markets,
   'Watchlist': AppRoutes.watchlist,
@@ -13,7 +12,6 @@ const _screens = {
   'Coin details': '/coins/bitcoin',
 };
 
-/// A typical phone: 412 x 915 logical pixels.
 void _usePhoneScreen(WidgetTester tester) {
   tester.view.physicalSize = const Size(1236, 2745);
   tester.view.devicePixelRatio = 3;
@@ -24,7 +22,6 @@ Future<void> _open(WidgetTester tester, String route) async {
   final container = await pumpApp(
     tester,
     marketRepository: MockMarketRepository(latency: Duration.zero),
-    // A saved coin, so the watchlist shows a list rather than its empty state.
     savedPreferences: {
       'watchlist_coin_ids': ['bitcoin', 'sample-new-coin'],
     },
@@ -43,13 +40,9 @@ void main() {
         final semantics = tester.ensureSemantics();
         await _open(tester, route);
 
-        // Android: tappable areas of at least 48x48 dp.
         await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
-        // iOS: at least 44x44 pt.
         await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
-        // Every tappable element has a label for screen readers.
         await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
-        // Text meets WCAG contrast (4.5:1, or 3:1 for large text).
         await expectLater(tester, meetsGuideline(textContrastGuideline));
 
         semantics.dispose();
@@ -64,7 +57,6 @@ void main() {
 
         await _open(tester, route);
 
-        // Overflow errors are reported as exceptions during layout.
         expect(tester.takeException(), isNull);
       });
     });

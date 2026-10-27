@@ -12,8 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_market_repository.dart';
 
-/// Pumps the whole app (router, theme, providers) with test repositories.
-/// Returns the provider container so tests can inspect or drive state.
 Future<ProviderContainer> pumpApp(
   WidgetTester tester, {
   MarketRepository? marketRepository,
@@ -23,14 +21,11 @@ Future<ProviderContainer> pumpApp(
   Map<String, Object> savedPreferences = const {},
   bool settle = true,
 }) async {
-  // In-memory SharedPreferences, starting with [savedPreferences], so tests
-  // can simulate data saved during an earlier app session.
   SharedPreferences.setMockInitialValues(savedPreferences);
   final preferences = await SharedPreferences.getInstance();
 
   await tester.pumpWidget(
     ProviderScope(
-      // Same as the real app: no automatic retries.
       retry: (_, _) => null,
       overrides: [
         sharedPreferencesProvider.overrideWithValue(preferences),

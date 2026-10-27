@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/market_query.dart';
 
-/// Bottom sheet listing every sort option. Returns the chosen option, or
-/// null if the sheet was dismissed.
 Future<MarketSort?> showSortSheet(
   BuildContext context, {
   required MarketSort current,

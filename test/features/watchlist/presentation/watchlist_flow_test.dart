@@ -64,7 +64,6 @@ void main() {
   ) async {
     final container = await pumpApp(tester, marketRepository: _market());
 
-    // push() completes only when the page is popped, so don't await it.
     unawaited(
       container.read(appRouterProvider).push(AppRoutes.coinDetails('solana')),
     );
@@ -75,7 +74,6 @@ void main() {
     await tester.tap(find.byTooltip('Back'));
     await tester.pumpAndSettle();
 
-    // Solana's star in the market list is already filled.
     await tester.scrollUntilVisible(
       find.byTooltip('Remove Solana from watchlist'),
       200,

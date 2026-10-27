@@ -27,7 +27,6 @@ class WatchlistScreen extends ConsumerWidget {
     }
   }
 
-  /// Removes the coin and offers Undo, which puts it back where it was.
   Future<void> _remove(
     BuildContext context,
     WidgetRef ref,
@@ -121,7 +120,6 @@ class _WatchlistList extends StatelessWidget {
     final theme = Theme.of(context);
 
     return ListView.builder(
-      // Always scrollable so pull-to-refresh works with a short list.
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: coins.length + 1,
       itemBuilder: (context, index) {
@@ -162,7 +160,6 @@ class _WatchlistList extends StatelessWidget {
   }
 }
 
-/// Sort menu in the app bar. Sorting is done on the device.
 class _SortMenu extends ConsumerWidget {
   const _SortMenu();
 

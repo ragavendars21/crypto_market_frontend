@@ -3,7 +3,6 @@ import '../domain/global_market_stats.dart';
 import '../domain/market_stats_repository.dart';
 import 'dtos/global_market_stats_dto.dart';
 
-/// Offline [MarketStatsRepository] backed by sample data.
 class MockMarketStatsRepository implements MarketStatsRepository {
   MockMarketStatsRepository({this.latency = const Duration(milliseconds: 400)});
 

@@ -1,4 +1,3 @@
-/// Sort options supported by `GET /api/v1/coins?sort=...`.
 enum MarketSort {
   marketCapDesc('market_cap_desc', 'Highest market cap'),
   marketCapAsc('market_cap_asc', 'Lowest market cap'),
@@ -11,14 +10,11 @@ enum MarketSort {
 
   const MarketSort(this.apiValue, this.label);
 
-  /// Value sent to the backend.
   final String apiValue;
 
-  /// Text shown in the UI.
   final String label;
 }
 
-/// Filter by direction of the 24h price change.
 enum MarketMovement {
   all('All'),
   gainers('Gainers'),
@@ -31,7 +27,6 @@ enum MarketMovement {
   String get apiValue => name;
 }
 
-/// Filter by market capitalization bracket.
 enum MarketCapTier {
   all('All caps', 'Any market cap'),
   large('Large cap', 'Market cap of \$10B or more'),
@@ -42,21 +37,14 @@ enum MarketCapTier {
 
   final String label;
 
-  /// Explains the threshold, used for tooltips and screen readers.
   final String description;
 
   String get apiValue => name;
 
-  /// Thresholds shared with the backend (see docs/api-contract.md).
   static const double largeCapMinimumUsd = 10e9;
   static const double midCapMinimumUsd = 1e9;
 }
 
-/// Everything that decides which coins the market list shows.
-///
-/// It is immutable: changing a filter creates a new query with [copyWith].
-/// That makes "did the query change?" a simple `==` check, which the
-/// market list uses to avoid repeating identical requests.
 class MarketQuery {
   const MarketQuery({
     this.search = '',
@@ -75,7 +63,6 @@ class MarketQuery {
   bool get hasActiveFilters =>
       movement != MarketMovement.all || tier != MarketCapTier.all;
 
-  /// True when search or a filter narrows the results (sort does not).
   bool get isNarrowed => trimmedSearch.isNotEmpty || hasActiveFilters;
 
   MarketQuery copyWith({

@@ -16,10 +16,8 @@ import 'widgets/coin_list_tile.dart';
 import 'widgets/market_overview_strip.dart';
 import 'widgets/search_and_filter_bar.dart';
 
-/// Content stays readable on tablets instead of stretching edge to edge.
 const double _maxContentWidth = 840;
 
-/// Start loading the next page when the user is this close to the end.
 const double _loadMoreThreshold = 600;
 
 class MarketScreen extends ConsumerWidget {
@@ -31,10 +29,7 @@ class MarketScreen extends ConsumerWidget {
         ref.refresh(marketListProvider.future),
         ref.refresh(globalStatsProvider.future),
       ]);
-    } catch (_) {
-      // Failures are already part of the providers' state and shown by the
-      // UI (error view or snackbar); the spinner just needs to stop.
-    }
+    } catch (_) {}
   }
 
   bool _onScroll(ScrollNotification notification, WidgetRef ref) {
@@ -48,7 +43,6 @@ class MarketScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final listState = ref.watch(marketListProvider);
 
-    // A failed pull-to-refresh keeps the old list on screen; tell the user.
     ref.listen(marketListProvider, (previous, next) {
       if (next is AsyncError && next.hasValue) {
         ScaffoldMessenger.of(
@@ -81,11 +75,9 @@ class MarketScreen extends ConsumerWidget {
                           const SliverToBoxAdapter(
                             child: MarketOverviewStrip(),
                           ),
-                          // Stays visible under the app bar while scrolling.
                           const PinnedHeaderSliver(child: SearchAndFilterBar()),
                           SliverToBoxAdapter(
                             child: _ReloadingIndicator(
-                              // New results for a changed query or refresh.
                               visible:
                                   listState.isLoading && listState.hasValue,
                             ),
@@ -116,7 +108,6 @@ class MarketScreen extends ConsumerWidget {
         ref.read(marketQueryProvider.notifier).clearSearchAndFilters();
 
     return switch (listState) {
-      // Data is shown whenever we have it, including while refreshing.
       AsyncValue(:final value?) when value.coins.isEmpty => [
         SliverFillRemaining(
           hasScrollBody: false,
@@ -187,8 +178,6 @@ class MarketScreen extends ConsumerWidget {
   }
 }
 
-/// Thin progress bar shown while new results replace the visible ones.
-/// Always takes the same height so the list doesn't jump.
 class _ReloadingIndicator extends StatelessWidget {
   const _ReloadingIndicator({required this.visible});
 
@@ -203,7 +192,6 @@ class _ReloadingIndicator extends StatelessWidget {
   }
 }
 
-/// "12 results · Clear", shown while search or filters narrow the list.
 class _ResultsSummary extends StatelessWidget {
   const _ResultsSummary({required this.totalItems, required this.onClear});
 
@@ -229,8 +217,6 @@ class _ResultsSummary extends StatelessWidget {
   }
 }
 
-/// Bottom of the list: a spinner while loading more, a retry row if that
-/// failed, or the data attribution once everything is loaded.
 class _ListFooter extends StatelessWidget {
   const _ListFooter({required this.state, required this.onRetry});
 

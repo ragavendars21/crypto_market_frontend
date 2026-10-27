@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 
-/// Builds the light and dark [ThemeData] from the same design tokens, so
-/// both themes always have identical shapes, spacing and typography.
 abstract final class AppTheme {
-  /// Bundled in assets/fonts/inter (see pubspec.yaml).
   static const fontFamily = 'Inter';
 
   static final ThemeData dark = _build(
@@ -143,8 +140,6 @@ abstract final class AppTheme {
   }
 }
 
-/// Numbers (prices, percentages) use tabular figures so every digit has the
-/// same width and values don't shift sideways when they update.
 extension TabularFigures on TextStyle {
   TextStyle get tabular =>
       copyWith(fontFeatures: const [FontFeature.tabularFigures()]);

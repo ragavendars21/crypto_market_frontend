@@ -46,7 +46,6 @@ void main() {
       ),
     );
 
-    // Rank, price, change, market cap, volume and supply.
     expect(find.text('—'), findsNWidgets(6));
     expect(find.textContaining(r'$0'), findsNothing);
   });

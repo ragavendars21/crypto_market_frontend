@@ -7,17 +7,12 @@ import '../../application/market_query_controller.dart';
 import '../../domain/market_query.dart';
 import 'sort_sheet.dart';
 
-/// Search field plus sort and filter chips for the market list.
-///
-/// Each chip watches only the part of the query it shows (via `select`), so
-/// typing in the search field doesn't rebuild the chips and vice versa.
 class SearchAndFilterBar extends StatelessWidget {
   const SearchAndFilterBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      // Opaque so list items scroll underneath cleanly while it's pinned.
       color: Theme.of(context).scaffoldBackgroundColor,
       child: const Padding(
         padding: EdgeInsets.fromLTRB(
@@ -49,7 +44,6 @@ class _SearchField extends ConsumerStatefulWidget {
 class _SearchFieldState extends ConsumerState<_SearchField> {
   final _controller = TextEditingController();
 
-  /// Matches the backend's limit for the `search` parameter.
   static const _maxSearchLength = 50;
 
   @override
@@ -61,13 +55,11 @@ class _SearchFieldState extends ConsumerState<_SearchField> {
   void _clear() {
     _controller.clear();
     ref.read(marketQueryProvider.notifier).submitSearch('');
-    setState(() {}); // Hide the clear button.
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    // If search is cleared elsewhere (e.g. the empty state's "Clear" button),
-    // empty the text field too.
     ref.listen(marketQueryProvider.select((q) => q.trimmedSearch), (_, next) {
       if (next.isEmpty && _controller.text.isNotEmpty) {
         _controller.clear();
@@ -95,7 +87,7 @@ class _SearchFieldState extends ConsumerState<_SearchField> {
       ),
       onChanged: (text) {
         notifier.updateSearch(text);
-        setState(() {}); // Show or hide the clear button.
+        setState(() {});
       },
       onSubmitted: notifier.submitSearch,
     );
@@ -112,9 +104,6 @@ class _FilterChips extends ConsumerWidget {
     final tier = ref.watch(marketQueryProvider.select((q) => q.tier));
     final notifier = ref.read(marketQueryProvider.notifier);
 
-    // A plain scrolling Row (not a lazy ListView): with only six chips,
-    // building them all is cheap and keeps every chip reachable by screen
-    // readers.
     return SizedBox(
       height: AppSizes.minTouchTarget,
       child: SingleChildScrollView(

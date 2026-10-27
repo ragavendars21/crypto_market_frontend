@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_spacing.dart';
 
-/// Gently pulses its child's opacity to signal loading. One animation can
-/// drive a whole list of [SkeletonBox]es.
 class SkeletonPulse extends StatefulWidget {
   const SkeletonPulse({super.key, required this.child});
 
@@ -23,7 +21,6 @@ class _SkeletonPulseState extends State<SkeletonPulse>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Respect the system "reduce motion" setting.
     if (MediaQuery.disableAnimationsOf(context)) {
       _controller.value = 1;
     } else if (!_controller.isAnimating) {
@@ -51,7 +48,6 @@ class _SkeletonPulseState extends State<SkeletonPulse>
   }
 }
 
-/// A rounded placeholder block shaped like the content it stands in for.
 class SkeletonBox extends StatelessWidget {
   const SkeletonBox({
     super.key,

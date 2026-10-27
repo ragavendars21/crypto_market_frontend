@@ -28,7 +28,6 @@ void main() {
     });
 
     test('accepts whole numbers for decimal fields', () {
-      // JSON has one number type; 1321000000000 must still become a double.
       final coin = CoinSummaryDto.fromJson({
         'id': 'x',
         'symbol': 'x',
@@ -48,7 +47,6 @@ void main() {
         'name': 'New Coin',
         'priceUsd': null,
         'marketCapUsd': null,
-        // circulatingSupply, rank, imageUrl and others are absent entirely.
       }).toDomain();
 
       expect(coin.priceUsd, isNull);

@@ -17,8 +17,6 @@ import 'widgets/dominance_bar.dart';
 
 const double _maxContentWidth = 720;
 
-/// Market-wide statistics: total market cap, volume, dominance and counts.
-/// Shares [globalStatsProvider] with the Markets overview strip.
 class MarketStatsScreen extends ConsumerWidget {
   const MarketStatsScreen({super.key});
 
@@ -26,7 +24,6 @@ class MarketStatsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stats = ref.watch(globalStatsProvider);
 
-    // A failed refresh keeps the previous numbers on screen; say so.
     ref.listen(globalStatsProvider, (previous, next) {
       if (next is AsyncError && next.hasValue) {
         ScaffoldMessenger.of(
@@ -43,9 +40,7 @@ class MarketStatsScreen extends ConsumerWidget {
             ref.invalidate(globalStatsProvider);
             try {
               await ref.read(globalStatsProvider.future);
-            } catch (_) {
-              // Reported by the listener above; the spinner just stops.
-            }
+            } catch (_) {}
           },
           child: _StatsContent(stats: value),
         ),
@@ -86,7 +81,6 @@ class _StatsContent extends StatelessWidget {
           children: [
             _HeroCard(stats: stats),
             const SizedBox(height: AppSpacing.md),
-            // Two cards per row; IntrinsicHeight keeps each pair equally tall.
             IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -171,7 +165,6 @@ class _StatsContent extends StatelessWidget {
   }
 }
 
-/// The headline number: total crypto market cap and its 24h change.
 class _HeroCard extends StatelessWidget {
   const _HeroCard({required this.stats});
 

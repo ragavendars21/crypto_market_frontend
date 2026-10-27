@@ -101,7 +101,6 @@ void main() {
     container.read(watchlistSortProvider.notifier).set(MarketSort.marketCapAsc);
     final sorted = container.read(sortedWatchlistProvider).requireValue;
 
-    // Coin 3 has the smaller market cap (1e9 / 3).
     expect(sorted.map((coin) => coin.id), ['coin-3', 'coin-1']);
   });
 }

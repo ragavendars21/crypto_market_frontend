@@ -3,7 +3,6 @@ import 'package:crypto_market/features/market/domain/coin_summary.dart';
 import 'package:crypto_market/features/market/domain/market_query.dart';
 import 'package:crypto_market/features/market/domain/market_repository.dart';
 
-/// Builds a coin with predictable values: coin 1 is the largest.
 CoinSummary testCoin(
   int number, {
   double? priceUsd,
@@ -28,8 +27,6 @@ List<CoinSummary> testCoins(int count) => [
   for (var i = 1; i <= count; i++) testCoin(i),
 ];
 
-/// Hand-written fake: serves [coins] page by page, records every request
-/// and can be told to fail, so tests control each scenario precisely.
 class FakeMarketRepository implements MarketRepository {
   FakeMarketRepository({
     List<CoinSummary>? coins,
@@ -41,7 +38,6 @@ class FakeMarketRepository implements MarketRepository {
   Duration delay;
   bool isStale;
 
-  /// When set, the next request throws this and the field is cleared.
   Object? failNextRequestWith;
 
   final List<({MarketQuery query, int page})> requests = [];
@@ -71,7 +67,6 @@ class FakeMarketRepository implements MarketRepository {
     );
   }
 
-  /// Every `getCoinsByIds` call, to check when the network is (not) used.
   final List<List<String>> idsRequests = [];
 
   @override

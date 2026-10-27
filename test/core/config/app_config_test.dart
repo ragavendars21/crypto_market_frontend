@@ -21,11 +21,9 @@ void main() {
   test('picks the right host address per platform when no URL is given', () {
     addTearDown(() => debugDefaultTargetPlatformOverride = null);
 
-    // The Android emulator reaches the host computer at 10.0.2.2.
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     expect(AppConfig.defaultApiBaseUrl(), 'http://10.0.2.2:3000/api/v1');
 
-    // The iOS simulator shares the host's network.
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     expect(AppConfig.defaultApiBaseUrl(), 'http://localhost:3000/api/v1');
   });

@@ -10,8 +10,6 @@ import '../../../../shared/widgets/state_views.dart';
 import '../../../market_stats/application/global_stats_provider.dart';
 import '../../../market_stats/domain/global_market_stats.dart';
 
-/// Three headline numbers above the market list: total market cap, 24h
-/// volume and Bitcoin dominance.
 class MarketOverviewStrip extends ConsumerWidget {
   const MarketOverviewStrip({super.key});
 
@@ -106,7 +104,6 @@ class _StatsRowSkeleton extends StatelessWidget {
   }
 }
 
-/// Compact inline error: the coin list below can still work without it.
 class _OverviewError extends StatelessWidget {
   const _OverviewError({required this.error, required this.onRetry});
 

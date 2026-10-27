@@ -1,14 +1,5 @@
-// SAMPLE DATA FOR DEVELOPMENT AND TESTS ONLY — NOT REAL MARKET DATA.
-//
-// Values are rounded, plausible-looking numbers so the UI can be built and
-// tested offline. Every map has the exact JSON shape our backend returns
-// (docs/api-contract.md), so mock repositories parse it with the same DTOs
-// as live responses. Some values are deliberately null to exercise the
-// "data not available" paths.
-
 const _imageBase = 'https://coin-images.coingecko.com/coins/images';
 
-/// Fixed "last updated" time so tests are deterministic.
 const mockLastUpdated = '2026-10-23T10:00:00.000Z';
 
 Map<String, Object?> _coin({
@@ -23,7 +14,6 @@ Map<String, Object?> _coin({
   required double? volume,
   required double? circulating,
 }) {
-  // Derive the absolute 24h change from the percentage so they agree.
   final changeUsd = (price == null || change24h == null)
       ? null
       : price - price / (1 + change24h / 100);
@@ -44,40 +34,297 @@ Map<String, Object?> _coin({
   };
 }
 
-/// Coin summaries ordered by market cap, as `GET /coins` returns them.
-// One coin per line reads like a table, so keep the formatter off here.
-// dart format off
 final List<Map<String, Object?>> mockCoinSummariesJson = [
-  _coin(id: 'bitcoin', symbol: 'btc', name: 'Bitcoin', imagePath: '1/large/bitcoin.png', rank: 1, price: 67012.50, change24h: 1.85, marketCap: 1.321e12, volume: 3.12e10, circulating: 19712345),
-  _coin(id: 'ethereum', symbol: 'eth', name: 'Ethereum', imagePath: '279/large/ethereum.png', rank: 2, price: 3285.40, change24h: -0.92, marketCap: 3.95e11, volume: 1.48e10, circulating: 120280000),
-  _coin(id: 'tether', symbol: 'usdt', name: 'Tether', imagePath: '325/large/Tether.png', rank: 3, price: 1.0002, change24h: 0.01, marketCap: 1.18e11, volume: 4.9e10, circulating: 118000000000),
-  _coin(id: 'binancecoin', symbol: 'bnb', name: 'BNB', imagePath: '825/large/bnb-icon2_2x.png', rank: 4, price: 598.20, change24h: 0.64, marketCap: 8.72e10, volume: 1.6e9, circulating: 145800000),
-  _coin(id: 'solana', symbol: 'sol', name: 'Solana', imagePath: '4128/large/solana.png', rank: 5, price: 172.41, change24h: 5.58, marketCap: 8.12e10, volume: 4.12e9, circulating: 471234567),
-  _coin(id: 'usd-coin', symbol: 'usdc', name: 'USDC', imagePath: '6319/large/usdc.png', rank: 6, price: 0.9998, change24h: -0.01, marketCap: 3.42e10, volume: 6.1e9, circulating: 34200000000),
-  _coin(id: 'ripple', symbol: 'xrp', name: 'XRP', imagePath: '44/large/xrp-symbol-white-128.png', rank: 7, price: 0.5234, change24h: -2.31, marketCap: 2.95e10, volume: 1.2e9, circulating: 56400000000),
-  _coin(id: 'dogecoin', symbol: 'doge', name: 'Dogecoin', imagePath: '5/large/dogecoin.png', rank: 8, price: 0.1385, change24h: 7.42, marketCap: 2.02e10, volume: 1.9e9, circulating: 146000000000),
-  _coin(id: 'tron', symbol: 'trx', name: 'TRON', imagePath: '1094/large/tron-logo.png', rank: 9, price: 0.1621, change24h: 0.35, marketCap: 1.41e10, volume: 4.1e8, circulating: 87000000000),
-  _coin(id: 'cardano', symbol: 'ada', name: 'Cardano', imagePath: '975/large/cardano.png', rank: 10, price: 0.3612, change24h: -1.12, marketCap: 1.28e10, volume: 3.4e8, circulating: 35400000000),
-  _coin(id: 'avalanche-2', symbol: 'avax', name: 'Avalanche', imagePath: '12559/large/Avalanche_Circle_RedWhite_Trans.png', rank: 11, price: 28.45, change24h: 3.20, marketCap: 1.16e10, volume: 4.5e8, circulating: 407000000),
-  _coin(id: 'shiba-inu', symbol: 'shib', name: 'Shiba Inu', imagePath: '11939/large/shiba.png', rank: 12, price: 0.00001842, change24h: -3.75, marketCap: 1.09e10, volume: 3.8e8, circulating: 589000000000000),
-  _coin(id: 'chainlink', symbol: 'link', name: 'Chainlink', imagePath: '877/large/chainlink-new-logo.png', rank: 13, price: 13.62, change24h: 2.05, marketCap: 8.3e9, volume: 3.6e8, circulating: 608000000),
-  _coin(id: 'polkadot', symbol: 'dot', name: 'Polkadot', imagePath: '12171/large/polkadot.png', rank: 14, price: 5.42, change24h: -0.45, marketCap: 7.9e9, volume: 2.1e8, circulating: 1460000000),
-  _coin(id: 'bitcoin-cash', symbol: 'bch', name: 'Bitcoin Cash', imagePath: '780/large/bitcoin-cash-circle.png', rank: 15, price: 372.10, change24h: 1.40, marketCap: 7.35e9, volume: 2.9e8, circulating: 19750000),
-  _coin(id: 'near', symbol: 'near', name: 'NEAR Protocol', imagePath: '10365/large/near.jpg', rank: 16, price: 5.12, change24h: -4.80, marketCap: 5.9e9, volume: 3.1e8, circulating: 1150000000),
-  _coin(id: 'litecoin', symbol: 'ltc', name: 'Litecoin', imagePath: '2/large/litecoin.png', rank: 17, price: 71.30, change24h: 0.90, marketCap: 5.35e9, volume: 3.3e8, circulating: 75000000),
-  _coin(id: 'uniswap', symbol: 'uni', name: 'Uniswap', imagePath: '12504/large/uni.jpg', rank: 18, price: 7.85, change24h: 6.10, marketCap: 4.7e9, volume: 1.9e8, circulating: null),
-  _coin(id: 'pepe', symbol: 'pepe', name: 'Pepe', imagePath: '29850/large/pepe-token.jpeg', rank: 19, price: 0.0000089, change24h: 12.40, marketCap: 3.74e9, volume: 9.8e8, circulating: 420690000000000),
-  _coin(id: 'stellar', symbol: 'xlm', name: 'Stellar', imagePath: '100/large/Stellar_symbol_black_RGB.png', rank: 20, price: 0.0942, change24h: null, marketCap: 2.73e9, volume: 6.2e7, circulating: 29000000000),
-  _coin(id: 'the-graph', symbol: 'grt', name: 'The Graph', imagePath: '13397/large/Graph_Token.png', rank: 21, price: 0.16, change24h: -2.10, marketCap: 1.53e9, volume: 5.1e7, circulating: 9550000000),
-  _coin(id: 'decentraland', symbol: 'mana', name: 'Decentraland', imagePath: '878/large/decentraland-mana.png', rank: 22, price: 0.29, change24h: 1.15, marketCap: 5.5e8, volume: 3.2e7, circulating: 1900000000),
-  _coin(id: 'basic-attention-token', symbol: 'bat', name: 'Basic Attention Token', imagePath: '677/large/basic-attention-token.png', rank: 23, price: 0.18, change24h: -0.60, marketCap: 2.7e8, volume: 1.4e7, circulating: 1490000000),
-  // A newly listed coin: most market values are not available yet.
-  _coin(id: 'sample-new-coin', symbol: 'snew', name: 'Sample New Coin With A Very Long Name', imagePath: null, rank: null, price: 0.042, change24h: null, marketCap: null, volume: 125000, circulating: null),
+  _coin(
+    id: 'bitcoin',
+    symbol: 'btc',
+    name: 'Bitcoin',
+    imagePath: '1/large/bitcoin.png',
+    rank: 1,
+    price: 67012.50,
+    change24h: 1.85,
+    marketCap: 1.321e12,
+    volume: 3.12e10,
+    circulating: 19712345,
+  ),
+  _coin(
+    id: 'ethereum',
+    symbol: 'eth',
+    name: 'Ethereum',
+    imagePath: '279/large/ethereum.png',
+    rank: 2,
+    price: 3285.40,
+    change24h: -0.92,
+    marketCap: 3.95e11,
+    volume: 1.48e10,
+    circulating: 120280000,
+  ),
+  _coin(
+    id: 'tether',
+    symbol: 'usdt',
+    name: 'Tether',
+    imagePath: '325/large/Tether.png',
+    rank: 3,
+    price: 1.0002,
+    change24h: 0.01,
+    marketCap: 1.18e11,
+    volume: 4.9e10,
+    circulating: 118000000000,
+  ),
+  _coin(
+    id: 'binancecoin',
+    symbol: 'bnb',
+    name: 'BNB',
+    imagePath: '825/large/bnb-icon2_2x.png',
+    rank: 4,
+    price: 598.20,
+    change24h: 0.64,
+    marketCap: 8.72e10,
+    volume: 1.6e9,
+    circulating: 145800000,
+  ),
+  _coin(
+    id: 'solana',
+    symbol: 'sol',
+    name: 'Solana',
+    imagePath: '4128/large/solana.png',
+    rank: 5,
+    price: 172.41,
+    change24h: 5.58,
+    marketCap: 8.12e10,
+    volume: 4.12e9,
+    circulating: 471234567,
+  ),
+  _coin(
+    id: 'usd-coin',
+    symbol: 'usdc',
+    name: 'USDC',
+    imagePath: '6319/large/usdc.png',
+    rank: 6,
+    price: 0.9998,
+    change24h: -0.01,
+    marketCap: 3.42e10,
+    volume: 6.1e9,
+    circulating: 34200000000,
+  ),
+  _coin(
+    id: 'ripple',
+    symbol: 'xrp',
+    name: 'XRP',
+    imagePath: '44/large/xrp-symbol-white-128.png',
+    rank: 7,
+    price: 0.5234,
+    change24h: -2.31,
+    marketCap: 2.95e10,
+    volume: 1.2e9,
+    circulating: 56400000000,
+  ),
+  _coin(
+    id: 'dogecoin',
+    symbol: 'doge',
+    name: 'Dogecoin',
+    imagePath: '5/large/dogecoin.png',
+    rank: 8,
+    price: 0.1385,
+    change24h: 7.42,
+    marketCap: 2.02e10,
+    volume: 1.9e9,
+    circulating: 146000000000,
+  ),
+  _coin(
+    id: 'tron',
+    symbol: 'trx',
+    name: 'TRON',
+    imagePath: '1094/large/tron-logo.png',
+    rank: 9,
+    price: 0.1621,
+    change24h: 0.35,
+    marketCap: 1.41e10,
+    volume: 4.1e8,
+    circulating: 87000000000,
+  ),
+  _coin(
+    id: 'cardano',
+    symbol: 'ada',
+    name: 'Cardano',
+    imagePath: '975/large/cardano.png',
+    rank: 10,
+    price: 0.3612,
+    change24h: -1.12,
+    marketCap: 1.28e10,
+    volume: 3.4e8,
+    circulating: 35400000000,
+  ),
+  _coin(
+    id: 'avalanche-2',
+    symbol: 'avax',
+    name: 'Avalanche',
+    imagePath: '12559/large/Avalanche_Circle_RedWhite_Trans.png',
+    rank: 11,
+    price: 28.45,
+    change24h: 3.20,
+    marketCap: 1.16e10,
+    volume: 4.5e8,
+    circulating: 407000000,
+  ),
+  _coin(
+    id: 'shiba-inu',
+    symbol: 'shib',
+    name: 'Shiba Inu',
+    imagePath: '11939/large/shiba.png',
+    rank: 12,
+    price: 0.00001842,
+    change24h: -3.75,
+    marketCap: 1.09e10,
+    volume: 3.8e8,
+    circulating: 589000000000000,
+  ),
+  _coin(
+    id: 'chainlink',
+    symbol: 'link',
+    name: 'Chainlink',
+    imagePath: '877/large/chainlink-new-logo.png',
+    rank: 13,
+    price: 13.62,
+    change24h: 2.05,
+    marketCap: 8.3e9,
+    volume: 3.6e8,
+    circulating: 608000000,
+  ),
+  _coin(
+    id: 'polkadot',
+    symbol: 'dot',
+    name: 'Polkadot',
+    imagePath: '12171/large/polkadot.png',
+    rank: 14,
+    price: 5.42,
+    change24h: -0.45,
+    marketCap: 7.9e9,
+    volume: 2.1e8,
+    circulating: 1460000000,
+  ),
+  _coin(
+    id: 'bitcoin-cash',
+    symbol: 'bch',
+    name: 'Bitcoin Cash',
+    imagePath: '780/large/bitcoin-cash-circle.png',
+    rank: 15,
+    price: 372.10,
+    change24h: 1.40,
+    marketCap: 7.35e9,
+    volume: 2.9e8,
+    circulating: 19750000,
+  ),
+  _coin(
+    id: 'near',
+    symbol: 'near',
+    name: 'NEAR Protocol',
+    imagePath: '10365/large/near.jpg',
+    rank: 16,
+    price: 5.12,
+    change24h: -4.80,
+    marketCap: 5.9e9,
+    volume: 3.1e8,
+    circulating: 1150000000,
+  ),
+  _coin(
+    id: 'litecoin',
+    symbol: 'ltc',
+    name: 'Litecoin',
+    imagePath: '2/large/litecoin.png',
+    rank: 17,
+    price: 71.30,
+    change24h: 0.90,
+    marketCap: 5.35e9,
+    volume: 3.3e8,
+    circulating: 75000000,
+  ),
+  _coin(
+    id: 'uniswap',
+    symbol: 'uni',
+    name: 'Uniswap',
+    imagePath: '12504/large/uni.jpg',
+    rank: 18,
+    price: 7.85,
+    change24h: 6.10,
+    marketCap: 4.7e9,
+    volume: 1.9e8,
+    circulating: null,
+  ),
+  _coin(
+    id: 'pepe',
+    symbol: 'pepe',
+    name: 'Pepe',
+    imagePath: '29850/large/pepe-token.jpeg',
+    rank: 19,
+    price: 0.0000089,
+    change24h: 12.40,
+    marketCap: 3.74e9,
+    volume: 9.8e8,
+    circulating: 420690000000000,
+  ),
+  _coin(
+    id: 'stellar',
+    symbol: 'xlm',
+    name: 'Stellar',
+    imagePath: '100/large/Stellar_symbol_black_RGB.png',
+    rank: 20,
+    price: 0.0942,
+    change24h: null,
+    marketCap: 2.73e9,
+    volume: 6.2e7,
+    circulating: 29000000000,
+  ),
+  _coin(
+    id: 'the-graph',
+    symbol: 'grt',
+    name: 'The Graph',
+    imagePath: '13397/large/Graph_Token.png',
+    rank: 21,
+    price: 0.16,
+    change24h: -2.10,
+    marketCap: 1.53e9,
+    volume: 5.1e7,
+    circulating: 9550000000,
+  ),
+  _coin(
+    id: 'decentraland',
+    symbol: 'mana',
+    name: 'Decentraland',
+    imagePath: '878/large/decentraland-mana.png',
+    rank: 22,
+    price: 0.29,
+    change24h: 1.15,
+    marketCap: 5.5e8,
+    volume: 3.2e7,
+    circulating: 1900000000,
+  ),
+  _coin(
+    id: 'basic-attention-token',
+    symbol: 'bat',
+    name: 'Basic Attention Token',
+    imagePath: '677/large/basic-attention-token.png',
+    rank: 23,
+    price: 0.18,
+    change24h: -0.60,
+    marketCap: 2.7e8,
+    volume: 1.4e7,
+    circulating: 1490000000,
+  ),
+  _coin(
+    id: 'sample-new-coin',
+    symbol: 'snew',
+    name: 'Sample New Coin With A Very Long Name',
+    imagePath: null,
+    rank: null,
+    price: 0.042,
+    change24h: null,
+    marketCap: null,
+    volume: 125000,
+    circulating: null,
+  ),
 ];
-// dart format on
 
-/// Extra fields for the details endpoint. Coins missing here still get a
-/// details response, with these values left null.
 const Map<String, Map<String, Object?>> _mockDetailExtras = {
   'bitcoin': {
     'totalSupply': 21000000.0,
@@ -105,7 +352,7 @@ const Map<String, Map<String, Object?>> _mockDetailExtras = {
   },
   'ethereum': {
     'totalSupply': 120280000.0,
-    'maxSupply': null, // Ethereum has no supply cap.
+    'maxSupply': null,
     'fullyDilutedValuationUsd': 3.95e11,
     'changes': {
       '1h': -0.08,
@@ -153,7 +400,6 @@ const Map<String, Map<String, Object?>> _mockDetailExtras = {
   },
 };
 
-/// Builds the details JSON for [coinId], or null if the coin is unknown.
 Map<String, Object?>? mockCoinDetailsJson(String coinId) {
   final summary = mockCoinSummariesJson
       .where((coin) => coin['id'] == coinId)
@@ -195,7 +441,6 @@ Map<String, Object?>? mockCoinDetailsJson(String coinId) {
   };
 }
 
-/// Global statistics in the backend's response shape.
 const Map<String, Object?> mockGlobalStatsJson = {
   'totalMarketCapUsd': 2.41e12,
   'totalVolumeUsd': 9.87e10,

@@ -15,13 +15,6 @@ import '../../features/watchlist/domain/watchlist_repository.dart';
 import '../config/app_config.dart';
 import '../network/api_client.dart';
 
-// The single place where mock vs live data is chosen. Everything else asks
-// for the interface type, and tests override these providers with fakes:
-//
-//   ProviderScope(overrides: [
-//     marketRepositoryProvider.overrideWithValue(FakeMarketRepository()),
-//   ], child: ...)
-
 final marketRepositoryProvider = Provider<MarketRepository>((ref) {
   return switch (ref.watch(appConfigProvider).dataSource) {
     DataSource.live => ApiMarketRepository(ref.watch(apiClientProvider)),
@@ -43,15 +36,12 @@ final marketStatsRepositoryProvider = Provider<MarketStatsRepository>((ref) {
   };
 });
 
-/// Loaded once in `main()` (it needs `await`) and injected with
-/// `overrideWithValue`, so everything else can read it synchronously.
 final sharedPreferencesProvider = Provider<SharedPreferences>(
   (ref) => throw UnimplementedError(
     'Override sharedPreferencesProvider in main() or in the test setup.',
   ),
 );
 
-/// The watchlist is stored on the device in both mock and live mode.
 final watchlistRepositoryProvider = Provider<WatchlistRepository>((ref) {
   return SharedPreferencesWatchlistRepository(
     ref.watch(sharedPreferencesProvider),

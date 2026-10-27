@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Circular coin logo with a letter fallback when there is no image URL or
-/// the image fails to load (offline, broken link).
-///
-/// Uses `Image.network`, which caches decoded images in memory. A disk cache
-/// package was left out on purpose: logos are small and it would add native
-/// plugins that complicate widget tests.
 class CoinLogo extends StatelessWidget {
   const CoinLogo({
     super.key,
@@ -24,7 +18,6 @@ class CoinLogo extends StatelessWidget {
     final url = imageUrl;
 
     return ExcludeSemantics(
-      // The coin name next to the logo already describes it.
       child: SizedBox.square(
         dimension: size,
         child: url == null
@@ -35,7 +28,6 @@ class CoinLogo extends StatelessWidget {
                   width: size,
                   height: size,
                   fit: BoxFit.cover,
-                  // Decode at display size instead of full resolution.
                   cacheWidth: (size * MediaQuery.devicePixelRatioOf(context))
                       .round(),
                   errorBuilder: (_, _, _) => fallback,

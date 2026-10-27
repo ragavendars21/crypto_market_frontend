@@ -4,7 +4,6 @@ import 'package:crypto_market/features/watchlist/domain/watchlist_repository.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// In-memory store that can be told to fail, to test the rollback.
 class _MemoryWatchlistRepository implements WatchlistRepository {
   _MemoryWatchlistRepository([List<String> initial = const []])
     : saved = [...initial];

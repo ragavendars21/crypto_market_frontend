@@ -5,10 +5,6 @@ import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_theme.dart';
 import '../formatters/market_formatters.dart';
 
-/// Shows a percentage change as ▲ +5.58% (green) or ▼ -2.40% (red).
-///
-/// Direction is shown by icon and sign as well as color, so it is clear to
-/// color-blind users. Screen readers hear "up 5.58 percent".
 class PriceChangeIndicator extends StatelessWidget {
   const PriceChangeIndicator({
     super.key,
@@ -20,18 +16,14 @@ class PriceChangeIndicator extends StatelessWidget {
 
   final double? percentage;
 
-  /// Spoken after the value, e.g. "in 24 hours".
   final String? periodLabel;
 
-  /// A tinted pill background, for emphasis in lists and headers.
   final bool filled;
   final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // Decide direction from the value as displayed, so 0.004% shows as a
-    // neutral "0.00%" rather than a green "▲ +0.00%".
     final raw = percentage;
     final value = raw == null ? null : MarketFormatters.roundedPercentage(raw);
     final color = switch (value) {

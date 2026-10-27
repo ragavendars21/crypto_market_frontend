@@ -4,7 +4,6 @@ import '../../domain/global_market_stats.dart';
 
 part 'global_market_stats_dto.g.dart';
 
-/// JSON shape of `GET /api/v1/market/global` → `data`.
 @JsonSerializable(createToJson: false)
 class GlobalMarketStatsDto {
   const GlobalMarketStatsDto({

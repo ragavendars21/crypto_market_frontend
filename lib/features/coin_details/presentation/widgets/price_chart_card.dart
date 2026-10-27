@@ -11,10 +11,6 @@ import '../../application/coin_details_providers.dart';
 import '../../domain/price_history.dart';
 import 'price_chart.dart';
 
-/// Range selector, chart and the range's change/low/high in one card.
-///
-/// Only this card watches the price history, so changing the range
-/// rebuilds the chart and nothing else on the screen.
 class PriceChartCard extends ConsumerWidget {
   const PriceChartCard({
     super.key,
@@ -80,7 +76,6 @@ class PriceChartCard extends ConsumerWidget {
   }
 }
 
-/// "▲ +5.20% in 7D · Low $64,100 · High $68,900"
 class _RangeSummary extends StatelessWidget {
   const _RangeSummary({required this.history});
 

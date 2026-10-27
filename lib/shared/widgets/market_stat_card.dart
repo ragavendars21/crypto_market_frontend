@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_theme.dart';
 
-/// A labelled statistic, e.g. "Market cap / $2.41T / ▲ 1.42%".
-/// Used in the market overview strip and on the Global screen.
 class MarketStatCard extends StatelessWidget {
   const MarketStatCard({
     super.key,
@@ -17,10 +15,8 @@ class MarketStatCard extends StatelessWidget {
   final String label;
   final String value;
 
-  /// Optional line under the value, typically a [PriceChangeIndicator].
   final Widget? footer;
 
-  /// Spoken instead of [value] when the visible text is abbreviated.
   final String? semanticValue;
 
   @override
@@ -41,7 +37,6 @@ class MarketStatCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: AppSpacing.xs),
-            // Scale long values down instead of overflowing small cards.
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
@@ -53,8 +48,6 @@ class MarketStatCard extends StatelessWidget {
             ),
             if (footer != null) ...[
               const SizedBox(height: AppSpacing.xs),
-              // Like the value: shrink rather than overflow in narrow cards
-              // or with large system text sizes.
               FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,

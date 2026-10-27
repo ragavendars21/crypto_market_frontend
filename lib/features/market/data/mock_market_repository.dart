@@ -6,18 +6,11 @@ import '../domain/market_repository.dart';
 import '../domain/market_sorting.dart';
 import 'dtos/coin_summary_dto.dart';
 
-/// Offline [MarketRepository] backed by sample data.
-///
-/// It applies search, filters, sorting and pagination the same way the
-/// backend does (docs/api-contract.md), so the UI behaves identically in
-/// mock and live mode. A small artificial delay makes loading states visible.
 class MockMarketRepository implements MarketRepository {
   MockMarketRepository({this.latency = const Duration(milliseconds: 400)});
 
   final Duration latency;
 
-  // Parsed with the same DTO as live responses, so mock mode also
-  // exercises the JSON mapping code.
   late final List<CoinSummary> _allCoins = mockCoinSummariesJson
       .map((json) => CoinSummaryDto.fromJson(json).toDomain())
       .toList(growable: false);

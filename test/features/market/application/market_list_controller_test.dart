@@ -44,7 +44,6 @@ void main() {
     expect(state.coins.last.id, 'coin-45');
     expect(state.hasNextPage, isFalse);
 
-    // Nothing left to load: no further request is made.
     await controller().loadNextPage();
     expect(repository.requests, hasLength(3));
   });
@@ -70,11 +69,9 @@ void main() {
     expect(state.loadMoreError, isA<TimeoutFailure>());
     expect(state.isLoadingMore, isFalse);
 
-    // Further scrolling does not retry on its own...
     await controller().loadNextPage();
     expect(repository.requests, hasLength(2));
 
-    // ...an explicit retry does, and clears the error on success.
     await controller().loadNextPage(isRetry: true);
     state = container.read(marketListProvider).requireValue;
     expect(state.coins, hasLength(40));

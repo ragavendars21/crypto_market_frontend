@@ -4,7 +4,6 @@ import '../../core/errors/app_failure.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 
-/// Shared layout for full-area messages (errors, empty results).
 class _MessageView extends StatelessWidget {
   const _MessageView({
     required this.icon,
@@ -63,9 +62,6 @@ class _MessageView extends StatelessWidget {
   }
 }
 
-/// Full-area error with a friendly message and a Retry button.
-/// Only [AppFailure] messages are shown; anything else gets a generic text,
-/// so raw exceptions never reach the user.
 class ErrorView extends StatelessWidget {
   const ErrorView({super.key, required this.error, required this.onRetry});
 
@@ -97,8 +93,6 @@ class ErrorView extends StatelessWidget {
   }
 }
 
-/// Compact error for a small area inside a screen (e.g. the chart), where
-/// the rest of the screen still works.
 class InlineErrorView extends StatelessWidget {
   const InlineErrorView({
     super.key,
@@ -141,14 +135,12 @@ class InlineErrorView extends StatelessWidget {
   }
 }
 
-/// User-facing text for any error object.
 String errorMessageFor(Object error) {
   return error is AppFailure
       ? error.message
       : 'Something unexpected happened. Please try again.';
 }
 
-/// Full-area message for "nothing to show", with an optional action.
 class EmptyStateView extends StatelessWidget {
   const EmptyStateView({
     super.key,
@@ -174,8 +166,6 @@ class EmptyStateView extends StatelessWidget {
   }
 }
 
-/// Thin banner shown when the backend served cached data because the
-/// provider was unavailable.
 class StaleDataBanner extends StatelessWidget {
   const StaleDataBanner({super.key});
 

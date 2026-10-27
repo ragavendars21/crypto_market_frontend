@@ -8,16 +8,10 @@ import '../../../../shared/widgets/price_change_indicator.dart';
 import '../../../../shared/widgets/skeleton.dart';
 import '../../domain/coin_summary.dart';
 
-// Space taken by the rank column, the logo and the gap after it. The
-// metrics row is indented by this much so it lines up under the name.
 const double _rankWidth = 28;
 const double _contentIndent =
     _rankWidth + AppSizes.coinLogoList + AppSpacing.md;
 
-/// One coin in a list: rank, logo, name, price and 24h change, with market
-/// cap, volume and circulating supply underneath.
-///
-/// Used by both the market list and the watchlist.
 class CoinListTile extends StatelessWidget {
   const CoinListTile({
     super.key,
@@ -29,15 +23,12 @@ class CoinListTile extends StatelessWidget {
   final CoinSummary coin;
   final VoidCallback onTap;
 
-  /// Optional extra action on the right, e.g. a watchlist star.
   final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // One accessible node per coin: screen readers announce a single summary
-    // sentence instead of a dozen separate numbers.
     final tile = Semantics(
       button: true,
       label: _semanticLabel(),
@@ -87,8 +78,6 @@ class CoinListTile extends StatelessWidget {
       ),
     );
 
-    // The trailing action stays outside the tile's semantics so it remains
-    // a separate, focusable control.
     final trailingAction = trailing;
     if (trailingAction == null) return tile;
     return Row(
@@ -157,7 +146,6 @@ class _PriceAndChange extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Very large prices shrink to fit rather than overflow narrow phones.
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 130),
           child: FittedBox(
@@ -232,7 +220,6 @@ class _Metric extends StatelessWidget {
   }
 }
 
-/// Placeholder with the same shape as [CoinListTile], shown while loading.
 class CoinListTileSkeleton extends StatelessWidget {
   const CoinListTileSkeleton({super.key});
 

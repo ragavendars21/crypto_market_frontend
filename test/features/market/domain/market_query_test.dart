@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('MarketQuery', () {
     test('queries that differ only by surrounding spaces are equal', () {
-      // Lets the market list skip a request when the user types a space.
       expect(
         const MarketQuery(search: 'btc '),
         const MarketQuery(search: ' btc'),

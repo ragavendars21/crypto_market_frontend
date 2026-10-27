@@ -4,7 +4,6 @@ import '../../domain/coin_details.dart';
 
 part 'coin_details_dto.g.dart';
 
-/// JSON shape of `GET /api/v1/coins/:coinId` → `data`.
 @JsonSerializable(createToJson: false)
 class CoinDetailsDto {
   const CoinDetailsDto({
@@ -68,7 +67,6 @@ class CoinDetailsDto {
       circulatingSupply: circulatingSupply,
       totalSupply: totalSupply,
       maxSupply: maxSupply,
-      // Every period gets an entry; a missing key simply becomes null.
       priceChangePercentages: {
         for (final period in ChangePeriod.values)
           period: changes[period.apiKey],

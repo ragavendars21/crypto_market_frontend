@@ -7,15 +7,8 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/formatters/market_formatters.dart';
 import '../../domain/price_history.dart';
 
-/// Height shared by the chart and its loading/empty states, so switching
-/// ranges never makes the page jump.
 const double priceChartHeight = 220;
 
-/// Interactive line chart of a coin's price over one range.
-///
-/// Drag across it to see the price and time at any point. Green when the
-/// range ended higher than it started, red when lower. With fewer than two
-/// points it shows a message instead of a misleading line.
 class PriceChart extends StatelessWidget {
   const PriceChart({super.key, required this.history});
 
@@ -39,8 +32,6 @@ class PriceChart extends StatelessWidget {
 
     final low = history.lowestPrice!;
     final high = history.highestPrice!;
-    // Leave breathing room above and below the line. A perfectly flat range
-    // still gets a visible band around the price.
     final padding = high == low ? high * 0.01 : (high - low) * 0.1;
     final minX = spots.first.x;
     final maxX = spots.last.x;
@@ -95,7 +86,6 @@ class PriceChart extends StatelessWidget {
                   showTitles: true,
                   reservedSize: 64,
                   getTitlesWidget: (value, meta) {
-                    // The outermost labels sit on the padding; skip them.
                     if (value == meta.min || value == meta.max) {
                       return const SizedBox.shrink();
                     }
@@ -175,7 +165,6 @@ class PriceChart extends StatelessWidget {
     );
   }
 
-  /// One sentence for screen readers, since a chart can't be "read".
   String _semanticSummary() {
     final first = history.points.first.priceUsd;
     final last = history.points.last.priceUsd;
@@ -196,14 +185,14 @@ class PriceChart extends StatelessWidget {
       : MarketFormatters.price(value);
 
   static DateFormat _axisTimeFormat(ChartRange range) => switch (range) {
-    ChartRange.day => DateFormat.Hm('en_US'), // 14:00
-    ChartRange.week || ChartRange.month => DateFormat.MMMd('en_US'), // Oct 23
-    ChartRange.year => DateFormat.MMM('en_US'), // Oct
+    ChartRange.day => DateFormat.Hm('en_US'),
+    ChartRange.week || ChartRange.month => DateFormat.MMMd('en_US'),
+    ChartRange.year => DateFormat.MMM('en_US'),
   };
 
   static DateFormat _tooltipTimeFormat(ChartRange range) => switch (range) {
-    ChartRange.year => DateFormat.yMMMd('en_US'), // Oct 23, 2026
-    _ => DateFormat('MMM d, HH:mm', 'en_US'), // Oct 23, 14:00
+    ChartRange.year => DateFormat.yMMMd('en_US'),
+    _ => DateFormat('MMM d, HH:mm', 'en_US'),
   };
 }
 

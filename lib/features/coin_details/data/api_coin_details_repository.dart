@@ -5,7 +5,6 @@ import '../domain/price_history.dart';
 import 'dtos/coin_details_dto.dart';
 import 'dtos/price_history_dto.dart';
 
-/// [CoinDetailsRepository] backed by our Node.js backend.
 class ApiCoinDetailsRepository implements CoinDetailsRepository {
   ApiCoinDetailsRepository(this._client);
 

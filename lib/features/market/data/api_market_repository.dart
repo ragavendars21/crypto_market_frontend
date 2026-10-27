@@ -5,10 +5,6 @@ import '../domain/market_query.dart';
 import '../domain/market_repository.dart';
 import 'dtos/coin_summary_dto.dart';
 
-/// [MarketRepository] backed by our Node.js backend (`GET /coins`).
-///
-/// Search, filters and sorting are sent to the server, which applies them
-/// to its cached top-250 list (see docs/api-contract.md).
 class ApiMarketRepository implements MarketRepository {
   ApiMarketRepository(this._client);
 
@@ -28,7 +24,6 @@ class ApiMarketRepository implements MarketRepository {
         'sort': query.sort.apiValue,
         'movement': query.movement.apiValue,
         'tier': query.tier.apiValue,
-        // The backend rejects an empty search, so only send real text.
         if (query.trimmedSearch.isNotEmpty) 'search': query.trimmedSearch,
       },
     );

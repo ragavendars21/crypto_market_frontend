@@ -5,10 +5,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../application/watchlist_controller.dart';
 import '../../domain/watchlist_repository.dart';
 
-/// Star that adds or removes a coin from the watchlist.
-///
-/// It watches only "is this coin saved?" via `select`, so toggling one coin
-/// rebuilds just that coin's stars, wherever they are on screen.
 class WatchlistButton extends ConsumerWidget {
   const WatchlistButton({
     super.key,

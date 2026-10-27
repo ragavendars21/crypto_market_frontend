@@ -1,5 +1,3 @@
-/// Spacing scale. Using named steps instead of arbitrary numbers keeps
-/// layouts consistent across screens.
 abstract final class AppSpacing {
   static const double xs = 4;
   static const double sm = 8;
@@ -27,6 +25,5 @@ abstract final class AppSizes {
   static const double coinLogoWatchlist = 40;
   static const double coinLogoHeader = 56;
 
-  /// Material accessibility guideline for tappable elements.
   static const double minTouchTarget = 48;
 }

@@ -4,7 +4,6 @@ import '../../domain/price_history.dart';
 
 part 'price_history_dto.g.dart';
 
-/// JSON shape of `GET /api/v1/coins/:coinId/market-chart` → `data`.
 @JsonSerializable(createToJson: false)
 class PriceHistoryDto {
   const PriceHistoryDto({
@@ -20,8 +19,6 @@ class PriceHistoryDto {
   final String range;
   final List<PricePointDto> points;
 
-  /// Drops points without a price (never interpolates them) and sorts the
-  /// rest oldest-first, so the chart can trust the order.
   PriceHistory toDomain() {
     final validPoints = <PricePoint>[
       for (final point in points)
@@ -49,7 +46,6 @@ class PricePointDto {
   factory PricePointDto.fromJson(Map<String, dynamic> json) =>
       _$PricePointDtoFromJson(json);
 
-  /// Milliseconds since the Unix epoch (UTC).
   final int timestamp;
   final double? priceUsd;
 }

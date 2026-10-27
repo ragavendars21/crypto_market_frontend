@@ -3,8 +3,6 @@ import 'package:crypto_market/features/coin_details/domain/coin_details.dart';
 import 'package:crypto_market/features/coin_details/domain/coin_details_repository.dart';
 import 'package:crypto_market/features/coin_details/domain/price_history.dart';
 
-/// Serves the realistic mock data, but records history requests and can be
-/// told to fail, so tests can check caching and error handling.
 class FakeCoinDetailsRepository implements CoinDetailsRepository {
   final _mock = MockCoinDetailsRepository(latency: Duration.zero);
 

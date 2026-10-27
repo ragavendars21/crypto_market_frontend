@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-/// Scaffold shared by the three top-level tabs.
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
   void _onTabSelected(int index) {
-    // Tapping the tab you're already on returns it to its first page.
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,

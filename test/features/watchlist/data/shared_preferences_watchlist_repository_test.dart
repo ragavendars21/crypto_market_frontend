@@ -21,7 +21,6 @@ void main() {
     await SharedPreferencesWatchlistRepository(preferences)
         .saveIds(['solana', 'bitcoin']);
 
-    // A new repository over the same store simulates the next app launch.
     expect(SharedPreferencesWatchlistRepository(preferences).loadIds(), [
       'solana',
       'bitcoin',

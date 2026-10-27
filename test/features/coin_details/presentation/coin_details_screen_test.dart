@@ -33,7 +33,6 @@ Future<void> _scrollTo(WidgetTester tester, Finder finder) async {
 }
 
 Future<void> _selectRange(WidgetTester tester, ChartRange range) async {
-  // "1Y" etc. also appear in the Performance grid, so look in the selector.
   await tester.tap(
     find.descendant(
       of: find.byType(SegmentedButton<ChartRange>),
@@ -76,7 +75,7 @@ void main() {
     expect(find.text(r'$1.41T'), findsOneWidget);
 
     await _scrollTo(tester, find.text('Max supply'));
-    expect(find.text('21.00M BTC'), findsNWidgets(2)); // Total and max.
+    expect(find.text('21.00M BTC'), findsNWidgets(2));
     expect(find.text('93.9% of max supply in circulation'), findsOneWidget);
 
     await _scrollTo(tester, find.text('All-time high'));
@@ -124,7 +123,6 @@ void main() {
     await _selectRange(tester, ChartRange.week);
     expect(find.text('in 7D'), findsOneWidget);
 
-    // 7D was cached, so going back did not request it again.
     expect(repository.historyRequests, [ChartRange.week, ChartRange.year]);
   });
 
@@ -149,7 +147,7 @@ void main() {
     await _openCoin(tester, 'bitcoin', repository: repository);
 
     expect(find.text(const TimeoutFailure().message), findsOneWidget);
-    expect(find.text(r'$67,012.50'), findsOneWidget); // Rest still works.
+    expect(find.text(r'$67,012.50'), findsOneWidget);
 
     await tester.tap(find.text('Try again'));
     await tester.pumpAndSettle();
@@ -175,7 +173,6 @@ void main() {
   ) async {
     final repository = FakeCoinDetailsRepository()
       ..failNextDetailsWith = const NetworkFailure();
-    // `go` replaces the stack, like opening a deep link: nothing to pop.
     await _openCoin(tester, 'bitcoin', repository: repository);
 
     await tester.tap(find.byTooltip('Back to markets'));

@@ -19,8 +19,6 @@ import 'widgets/price_chart_card.dart';
 
 const double _maxContentWidth = 720;
 
-/// Everything about one coin. Opened from the market list, the watchlist
-/// or a deep link such as `/coins/bitcoin`; it only needs the coin ID.
 class CoinDetailsScreen extends ConsumerStatefulWidget {
   const CoinDetailsScreen({super.key, required this.coinId});
 
@@ -31,8 +29,6 @@ class CoinDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _CoinDetailsScreenState extends ConsumerState<CoinDetailsScreen> {
-  // The selected range is temporary UI state that only this screen cares
-  // about, so it lives here rather than in a provider.
   ChartRange _range = ChartRange.week;
 
   Future<void> _refresh() async {
@@ -43,9 +39,7 @@ class _CoinDetailsScreenState extends ConsumerState<CoinDetailsScreen> {
           priceHistoryProvider((coinId: widget.coinId, range: _range)).future,
         ),
       ]);
-    } catch (_) {
-      // Errors are shown by the sections themselves.
-    }
+    } catch (_) {}
   }
 
   @override
@@ -54,8 +48,6 @@ class _CoinDetailsScreenState extends ConsumerState<CoinDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // Opened from a link there's nothing to go back to, so offer a way
-        // to the markets instead of leaving the user stuck.
         leading: context.canPop()
             ? null
             : IconButton(
@@ -65,7 +57,6 @@ class _CoinDetailsScreenState extends ConsumerState<CoinDetailsScreen> {
               ),
         title: Text(details.value?.name ?? ''),
         actions: [
-          // Only once the coin is known to exist.
           if (details.value case final coin?)
             WatchlistButton(coinId: coin.id, coinName: coin.name),
         ],
@@ -195,8 +186,6 @@ class _DetailsSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // A non-scrolling ListView clips on short screens (e.g. landscape)
-    // instead of overflowing like a Column would.
     return SkeletonPulse(
       child: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),

@@ -22,7 +22,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(CoinListTileSkeleton), findsNothing);
-    // The list is lazy, so only tiles near the viewport are built.
     expect(find.byType(CoinListTile), findsWidgets);
     expect(find.text('Coin 1'), findsOneWidget);
   });
@@ -70,7 +69,6 @@ void main() {
     await pumpApp(tester, marketRepository: FakeMarketRepository(coins: []));
 
     expect(find.text('No coins match these filters'), findsOneWidget);
-    // Nothing to clear, so no reset button is offered.
     expect(find.text('Clear search and filters'), findsNothing);
   });
 
@@ -102,7 +100,6 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     await tester.pumpAndSettle();
-    // Loaded coins stay, and scrolling did not keep retrying by itself.
     expect(find.text('Coin 20'), findsOneWidget);
     expect(repository.requests.map((r) => r.page), [1, 2]);
 

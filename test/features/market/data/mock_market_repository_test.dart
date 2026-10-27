@@ -48,7 +48,6 @@ void main() {
 
       expect(byName.coins.map((c) => c.id), ['bitcoin', 'bitcoin-cash']);
       expect(bySymbol.coins.map((c) => c.id), ['stellar']);
-      // "eth" also matches inside "Tether": search is a substring match.
       expect(partial.coins.map((c) => c.id), ['ethereum', 'tether']);
     });
 
@@ -110,7 +109,6 @@ void main() {
         losers.coins.map((c) => c.priceChangePercentage24h),
         everyElement(lessThan(0)),
       );
-      // Coins with no 24h change belong to neither group.
       expect(gainers.totalItems + losers.totalItems, 22);
     });
 

@@ -1,11 +1,6 @@
 import 'coin_summary.dart';
 import 'market_query.dart';
 
-/// Returns a new list of [coins] in [sort] order.
-///
-/// Coins missing the sorted value always go last, in either direction, so
-/// "unknown" never shows up as "lowest". Used for client-side sorting (the
-/// watchlist) and by the mock repository, which mirrors the backend.
 List<CoinSummary> sortCoins(Iterable<CoinSummary> coins, MarketSort sort) {
   return [...coins]..sort((a, b) => _compare(a, b, sort));
 }

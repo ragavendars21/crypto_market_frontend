@@ -5,18 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/app_config.dart';
 import '../errors/app_failure.dart';
 
-/// Thin wrapper around Dio for our backend.
-///
-/// Its one job besides sending requests: make sure callers only ever see
-/// an [AppFailure], never a `DioException` or a JSON parsing error. That
-/// keeps every repository and screen free of HTTP details.
 class ApiClient {
   ApiClient(this._dio);
 
   final Dio _dio;
 
-  /// GETs [path] and returns the decoded JSON body, which is always the
-  /// contract's `{ "data": ..., "meta": ... }` envelope.
   Future<Map<String, dynamic>> get(
     String path, {
     Map<String, Object>? queryParameters,
@@ -36,8 +29,6 @@ class ApiClient {
     throw const ServerFailure(code: 'MALFORMED_RESPONSE');
   }
 
-  /// Runs [parse] on a response, turning any parsing error into a
-  /// [ServerFailure] instead of letting a `TypeError` reach the UI.
   static T parse<T>(T Function() parse) {
     try {
       return parse();
@@ -50,7 +41,6 @@ class ApiClient {
   }
 }
 
-/// Translates a Dio error into the failure the UI knows how to show.
 AppFailure mapDioException(DioException error) {
   switch (error.type) {
     case DioExceptionType.connectionTimeout:
@@ -67,15 +57,12 @@ AppFailure mapDioException(DioException error) {
     case DioExceptionType.cancel:
       return const ServerFailure(code: 'CANCELLED');
     case DioExceptionType.unknown:
-      // No response at all usually means a low-level socket error (no
-      // usable network); with a response, something failed on our side.
       return error.response == null
           ? const NetworkFailure()
           : const ServerFailure();
   }
 }
 
-/// Reads the backend's `{ "error": { "code": ... } }` body.
 AppFailure _mapErrorResponse(Response<Object?>? response) {
   final body = response?.data;
   final code = body is Map<String, dynamic> && body['error'] is Map
@@ -100,15 +87,12 @@ Duration? _retryAfter(Response<Object?>? response) {
   return seconds == null ? null : Duration(seconds: seconds);
 }
 
-/// Dio configured for our backend. A provider so tests can swap the
-/// transport and so there is exactly one instance in the app.
 final dioProvider = Provider<Dio>((ref) {
   final config = ref.watch(appConfigProvider);
   final dio = Dio(
     BaseOptions(
       baseUrl: config.apiBaseUrl,
       connectTimeout: const Duration(seconds: 10),
-      // The backend may wait up to ~8 s for CoinGecko (plus one retry).
       receiveTimeout: const Duration(seconds: 20),
       responseType: ResponseType.json,
       headers: {'Accept': 'application/json'},
@@ -116,7 +100,6 @@ final dioProvider = Provider<Dio>((ref) {
   );
 
   if (kDebugMode) {
-    // Request lines and status codes only: bodies are large and noisy.
     dio.interceptors.add(
       LogInterceptor(
         requestHeader: false,

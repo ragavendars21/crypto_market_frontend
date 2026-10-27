@@ -51,9 +51,7 @@ void main() {
       }).toDomain();
 
       expect(details.maxSupply, isNull);
-      // No cap means no progress bar — not a 0% or 100% guess.
       expect(details.circulatingSupplyRatio, isNull);
-      // Every period is present as a key, unknown ones are null.
       expect(details.priceChangePercentages.keys, ChangePeriod.values);
       expect(details.priceChangePercentages[ChangePeriod.h24], -0.92);
       expect(details.priceChangePercentages[ChangePeriod.d7], isNull);

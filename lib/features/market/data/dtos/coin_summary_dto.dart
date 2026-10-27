@@ -5,10 +5,6 @@ import '../../domain/coin_summary.dart';
 
 part 'coin_summary_dto.g.dart';
 
-/// JSON shape of a coin in `GET /api/v1/coins` (see docs/api-contract.md).
-///
-/// DTOs mirror the API exactly and stay in the data layer. [toDomain]
-/// converts them into app models, so an API change only touches this file.
 @JsonSerializable(createToJson: false)
 class CoinSummaryDto {
   const CoinSummaryDto({
@@ -60,7 +56,6 @@ class CoinSummaryDto {
   }
 }
 
-/// Pagination fields in the `meta` object of `GET /api/v1/coins`.
 @JsonSerializable(createToJson: false)
 class CoinPageMetaDto {
   const CoinPageMetaDto({
@@ -73,14 +68,12 @@ class CoinPageMetaDto {
   factory CoinPageMetaDto.fromJson(Map<String, dynamic> json) =>
       _$CoinPageMetaDtoFromJson(json);
 
-  /// `live`, `mock` or `stale`.
   final String source;
   final int page;
   final int totalItems;
   final bool hasNextPage;
 }
 
-/// Full response body of a paginated `GET /api/v1/coins` request.
 @JsonSerializable(createToJson: false)
 class CoinPageResponseDto {
   const CoinPageResponseDto({required this.data, required this.meta});

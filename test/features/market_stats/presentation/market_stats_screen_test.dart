@@ -10,7 +10,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/pump_app.dart';
 
-/// Fails the first request, then serves the sample data.
 class _FlakyStatsRepository implements MarketStatsRepository {
   final _mock = MockMarketStatsRepository(latency: Duration.zero);
   bool _failed = false;
@@ -61,7 +60,6 @@ void main() {
       expect(find.text(label), findsOneWidget, reason: label);
     }
     expect(find.text('54.8%'), findsWidgets);
-    // 100 - (54.8 + 16.4 + 4.9 + 3.6 + 3.4) = 16.9
     expect(find.text('16.9%'), findsOneWidget);
   });
 
