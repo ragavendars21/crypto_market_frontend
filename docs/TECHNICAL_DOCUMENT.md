@@ -4,8 +4,8 @@
 |---|---|
 | **Author** | Ragavendar S |
 | **Repositories** | [crypto_market_frontend](https://github.com/ragavendars21/crypto_market_frontend) (Flutter) · [crypto_market_backend](https://github.com/ragavendars21/crypto_market_backend) (Node.js) |
-| **Status** | Feature complete; all automated checks passing (see §21) |
-| **Document date** | 26 October 2026 |
+| **Status** | Feature complete; all automated checks passing locally and on GitHub Actions (see §21) |
+| **Document date** | 26 October 2026 (updated 27 October 2026) |
 
 This document describes the application as it was actually built and tested. Where something
 was not verified, it says so.
@@ -112,7 +112,7 @@ Build a recruiter-ready crypto market and research app, from scratch to completi
 | | Live mode (backend) and mock mode (offline sample data) | ✅ |
 | Backend | 5 endpoints + OpenAPI docs at `/api-docs` | ✅ |
 | | Zod validation, caching with request sharing and stale fallback, retry policy, rate limiting, Helmet, log redaction | ✅ |
-| Quality | 159 Flutter + 93 backend tests; accessibility guideline tests; GitHub Actions CI | ✅ (CI not yet run on GitHub — see §24) |
+| Quality | 159 Flutter + 93 backend tests; accessibility guideline tests; GitHub Actions CI | ✅ (CI passing on GitHub for both repositories) |
 
 ---
 
@@ -613,6 +613,8 @@ and real CoinGecko responses saved as fixtures.
 | Android build | `flutter build apk --debug` | Built successfully |
 | Web build + browser check | `flutter build web` + headless Chrome | All screens rendered in mock and live mode |
 | Live end-to-end | Web build → backend → CoinGecko | Real prices, charts, global stats, dominance |
+| GitHub Actions CI (frontend) | format check, `flutter analyze`, `flutter test` on Ubuntu | Passed (27 Oct 2026) |
+| GitHub Actions CI (backend) | `npm ci`, lint, `npm audit --audit-level=high`, `npm test` on Ubuntu | Passed (27 Oct 2026) |
 
 ### Coverage by area
 
@@ -694,8 +696,9 @@ flutter run                   # emulator: uses http://10.0.2.2:3000 automaticall
 - **Not yet run on a physical Android device or verified interactively on the emulator** by the
   author's tooling; Android was verified by a successful debug build. iOS was not built (Windows
   development machine).
-- **GitHub Actions workflows have not run on GitHub yet** — they were validated locally and will
-  run on the first push.
+- **Source code has no comments.** They were removed in a "code cleanup" commit (27 Oct 2026); the
+  reasoning behind design decisions is documented here and in [architecture.md](architecture.md).
+  The earlier commented version remains available in the git history.
 - **Search covers the top 250 coins** (documented in the UI). Coins outside it can still be viewed
   by ID and saved to the watchlist.
 - **Stale-data flag** is shown on the market list only; details and global screens don't show it.
